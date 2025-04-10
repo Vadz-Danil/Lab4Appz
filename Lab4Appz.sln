@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SightSeeing.Abstraction", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SightSeeing.Entities", "SightSeeing.Entities\SightSeeing.Entities.csproj", "{ED04C575-B58B-490F-9A04-7EAB72D3C59D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SightSeeing.BLL", "SightSeeing.BLL\SightSeeing.BLL.csproj", "{D72179BB-C6E6-4530-A5BB-C7051BA7EA75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{ED04C575-B58B-490F-9A04-7EAB72D3C59D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED04C575-B58B-490F-9A04-7EAB72D3C59D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED04C575-B58B-490F-9A04-7EAB72D3C59D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D72179BB-C6E6-4530-A5BB-C7051BA7EA75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D72179BB-C6E6-4530-A5BB-C7051BA7EA75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D72179BB-C6E6-4530-A5BB-C7051BA7EA75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D72179BB-C6E6-4530-A5BB-C7051BA7EA75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
