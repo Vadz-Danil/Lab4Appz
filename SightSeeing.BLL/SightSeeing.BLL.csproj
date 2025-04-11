@@ -7,6 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\SightSeeing.Abstraction\SightSeeing.Abstraction.csproj" />
+      <ProjectReference Include="..\SightSeeing.Entities\SightSeeing.Entities.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="AutoMapper" Version="14.0.0" />
     </ItemGroup>
 
