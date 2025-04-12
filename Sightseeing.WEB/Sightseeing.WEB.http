@@ -1,0 +1,6 @@
+@Sightseeing.WEB_HostAddress = http://localhost:5117
+
+GET {{Sightseeing.WEB_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

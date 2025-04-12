@@ -1,0 +1,25 @@
+@page
+@model SightSeeing.WEB.Pages.Reviews.CreateModel
+
+<h2>Create Review</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Review.Text">Text</label>
+        <textarea asp-for="Review.Text" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="Review.Rating">Rating</label>
+        <input asp-for="Review.Rating" class="form-control" type="number" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Review.UserId">User ID</label>
+        <input asp-for="Review.UserId" class="form-control" type="number" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Review.PlaceId">Place ID</label>
+        <input asp-for="Review.PlaceId" class="form-control" type="number" />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>

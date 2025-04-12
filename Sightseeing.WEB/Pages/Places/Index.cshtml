@@ -1,0 +1,33 @@
+@page
+@model SightSeeing.WEB.Pages.Places.IndexModel
+
+<h2>Places</h2>
+
+<a asp-page="Create" class="btn btn-primary">Create New Place</a>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var place in Model.Places)
+    {
+        <tr>
+            <td>@place.Id</td>
+            <td>@place.Name</td>
+            <td>@place.Description</td>
+            <td>
+                <a asp-page="Edit" asp-route-id="@place.Id" class="btn btn-secondary">Edit</a>
+                <form asp-page-handler="Delete" asp-route-id="@place.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

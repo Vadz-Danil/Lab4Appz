@@ -1,0 +1,33 @@
+@page
+@model SightSeeing.WEB.Pages.Users.IndexModel
+
+<h2>Users</h2>
+
+<a asp-page="Create" class="btn btn-primary">Create New User</a>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model.Users)
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.Name</td>
+            <td>@user.Role</td>
+            <td>
+                <a asp-page="Edit" asp-route-id="@user.Id" class="btn btn-secondary">Edit</a>
+                <form asp-page-handler="Delete" asp-route-id="@user.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
