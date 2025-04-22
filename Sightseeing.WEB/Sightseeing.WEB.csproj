@@ -25,4 +25,10 @@
       <ProjectReference Include="..\SightSeeing.Entities\SightSeeing.Entities.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Users\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Users\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Users\Index.cshtml" />
+    </ItemGroup>
+
 </Project>

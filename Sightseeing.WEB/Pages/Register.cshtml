@@ -1,0 +1,27 @@
+@page
+@model SightSeeing.WEB.Pages.RegisterModel
+
+<h2>Реєстрація</h2>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="User.Name">Ім'я користувача</label>
+        <input asp-for="User.Name" class="form-control" />
+        <span asp-validation-for="User.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Password">Пароль</label>
+        <input asp-for="User.Password" class="form-control" type="password" />
+        <span asp-validation-for="User.Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="User.Role">Роль</label>
+        <select asp-for="User.Role" class="form-control">
+            <option value="User">Користувач</option>
+            <option value="Manager">Менеджер</option>
+        </select>
+        <span asp-validation-for="User.Role" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Зареєструватися</button>
+</form>

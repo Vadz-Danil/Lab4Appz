@@ -1,0 +1,23 @@
+@page "{id:int}"
+@model SightSeeing.WEB.Pages.Places.DetailsModel
+
+<h2>@Model.Place.Name</h2>
+<p>@Model.Place.Description</p>
+<p>Тип: @Model.Place.Type</p>
+
+<h3>Додаткова інформація</h3>
+@if (Model.AdditionalInfos.Any())
+{
+    <div>
+        @foreach (var info in Model.AdditionalInfos)
+        {
+            <p>@info.Type: @info.Path</p>
+        }
+    </div>
+}
+else
+{
+    <p>Додаткової інформації немає.</p>
+}
+
+<button type="button" onclick="window.history.back()" class="btn btn-secondary">Назад</button>

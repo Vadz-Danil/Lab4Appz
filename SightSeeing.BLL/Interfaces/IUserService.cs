@@ -1,11 +1,10 @@
 using SightSeeing.Entities.DTO;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace SightSeeing.BLL.Interfaces
 {
     public interface IUserService
     {
+        Task<UserDto> AuthenticateAsync(string username, string password);
         Task<UserDto> GetUserByIdAsync(int id);
         Task<IEnumerable<UserDto>> GetAllUsersAsync();
         Task AddUserAsync(UserDto userDto);

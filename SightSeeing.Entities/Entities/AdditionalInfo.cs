@@ -1,12 +1,16 @@
-namespace SightSeeing.Entities
+using System.ComponentModel.DataAnnotations;
+
+namespace SightSeeing.Entities.Entities
 {
     public class AdditionalInfo
     {
         public int Id { get; set; }
+        [Required(ErrorMessage = "Поле Тип є обов'язковим")]
         public string Type { get; set; } 
+        [Required(ErrorMessage = "Поле Шлях до файлу є обов'язковим")]
         public string Path { get; set; }
         
         public int PlaceId { get; set; }
-        public Place Place { get; set; }
+        public virtual Place? Place { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using SightSeeing.Entities;
+using SightSeeing.Entities.Entities;
 
 namespace SightSeeing.DAL.DbContext
 {
@@ -39,7 +39,7 @@ namespace SightSeeing.DAL.DbContext
             
             modelBuilder.Entity<Question>()
                 .HasOne(q => q.User)
-                .WithMany(u => u.Questions)
+                .WithMany()
                 .HasForeignKey(q => q.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
             
@@ -57,7 +57,7 @@ namespace SightSeeing.DAL.DbContext
             
             modelBuilder.Entity<Answer>()
                 .HasOne(a => a.User)
-                .WithMany(u => u.Answers)
+                .WithMany()
                 .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
             

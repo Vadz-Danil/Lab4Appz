@@ -1,37 +1,23 @@
 @page
 @model SightSeeing.WEB.Pages.Reviews.IndexModel
-
-<h2>Reviews</h2>
-
-<a asp-page="Create" class="btn btn-primary">Create New Review</a>
-
+<h2>Відгуки</h2>
 <table class="table">
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Text</th>
-        <th>Rating</th>
-        <th>User ID</th>
-        <th>Place ID</th>
-        <th>Actions</th>
+        <th>Текст</th>
+        <th>Оцінка</th>
+        <th>Місце</th>
     </tr>
     </thead>
     <tbody>
     @foreach (var review in Model.Reviews)
     {
         <tr>
-            <td>@review.Id</td>
             <td>@review.Text</td>
             <td>@review.Rating</td>
-            <td>@review.UserId</td>
-            <td>@review.PlaceId</td>
-            <td>
-                <a asp-page="Edit" asp-route-id="@review.Id" class="btn btn-secondary">Edit</a>
-                <form asp-page-handler="Delete" asp-route-id="@review.Id" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </td>
+            <td>@Model.PlaceNames[review.PlaceId]</td>
         </tr>
     }
     </tbody>
 </table>
+<button type="button" onclick="window.location.href='/Index'" class="btn btn-secondary">Назад</button>

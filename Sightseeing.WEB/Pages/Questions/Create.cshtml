@@ -1,0 +1,24 @@
+@page "{placeId:int}"
+@model SightSeeing.WEB.Pages.Questions.CreateModel
+
+<h2>Додати запитання</h2>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+else
+{
+    <p><strong>Місце:</strong> @Model.Place.Name</p>
+    <form method="post" asp-page="/Questions/Create" asp-route-placeId="@Model.Place.Id">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Question.PlaceId" />
+        <div class="form-group">
+            <label asp-for="Question.Text">Текст запитання</label>
+            <textarea asp-for="Question.Text" class="form-control"></textarea>
+            <span asp-validation-for="Question.Text" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Зберегти</button>
+        <button type="button" onclick="window.history.back()" class="btn btn-secondary">Назад</button>
+    </form>
+}

@@ -1,0 +1,9 @@
+@page "{id:int}"
+@model SightSeeing.WEB.Pages.Places.DeleteModel
+<h2>Видалити місце</h2>
+<p>Ви впевнені, що хочете видалити місце "@Model.Place.Name"?</p>
+<form method="post">
+    <input type="hidden" asp-for="Place.Id" />
+    <button type="submit" class="btn btn-danger">Видалити</button>
+    <a asp-page="Index" class="btn btn-secondary">Скасувати</a>
+</form>

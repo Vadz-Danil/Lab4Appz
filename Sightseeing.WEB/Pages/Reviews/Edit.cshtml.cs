@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SightSeeing.BLL.Interfaces;
 using SightSeeing.Entities.DTO;
-using System.Threading.Tasks;
 
 namespace SightSeeing.WEB.Pages.Reviews
 {

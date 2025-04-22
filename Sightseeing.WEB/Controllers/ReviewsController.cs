@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SightSeeing.BLL.Interfaces;
 using SightSeeing.Entities.DTO;
-using System.Threading.Tasks;
 
 namespace SightSeeing.WEB.Controllers
 {

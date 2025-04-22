@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using SightSeeing.DAL.DbContext;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using SightSeeing.Abstraction.Interfaces;
 
 namespace SightSeeing.DAL.Repositories
@@ -28,10 +26,6 @@ namespace SightSeeing.DAL.Repositories
 
         public async Task<IEnumerable<T>> GetAllAsync(bool eager = false)
         {
-            if (eager)
-            {
-                return await _dbSet.ToListAsync();
-            }
             return await _dbSet.ToListAsync();
         }
 
@@ -52,35 +46,6 @@ namespace SightSeeing.DAL.Repositories
             {
                 _dbSet.Remove(entity);
             }
-        }
-        
-        private IQueryable<T> IncludeAll()
-        {
-            IQueryable<T> query = _dbSet;
-            var entityType = typeof(T).Name;
-
-            switch (entityType)
-            {
-                case nameof(Entities.User):
-                    query = query.Include("Reviews").Include("Questions").Include("Answers");
-                    break;
-                case nameof(Entities.Place):
-                    query = query.Include("Reviews").Include("Questions").Include("AdditionalInfos");
-                    break;
-                case nameof(Entities.Review):
-                    query = query.Include("User").Include("Place");
-                    break;
-                case nameof(Entities.Question):
-                    query = query.Include("User").Include("Place").Include("Answers");
-                    break;
-                case nameof(Entities.Answer):
-                    query = query.Include("User").Include("Question");
-                    break;
-                case nameof(Entities.AdditionalInfo):
-                    query = query.Include("Place");
-                    break;
-            }
-            return query;
         }
     }
 }

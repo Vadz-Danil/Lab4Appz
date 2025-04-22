@@ -1,6 +1,6 @@
 using AutoMapper;
 using SightSeeing.Entities.DTO;
-using SightSeeing.Entities;
+using SightSeeing.Entities.Entities;
 
 namespace SightSeeing.BLL.Mapping
 {
@@ -11,6 +11,8 @@ namespace SightSeeing.BLL.Mapping
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<Place, PlaceDto>().ReverseMap();
             CreateMap<Review, ReviewDto>().ReverseMap();
+            CreateMap<Question, QuestionDto>().ReverseMap();
+            CreateMap<Answer, AnswerDto>().ReverseMap();
         }
     }
 }

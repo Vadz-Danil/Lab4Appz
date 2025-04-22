@@ -1,33 +1,32 @@
 @page
 @model SightSeeing.WEB.Pages.Places.IndexModel
-
-<h2>Places</h2>
-
-<a asp-page="Create" class="btn btn-primary">Create New Place</a>
-
+<h2>Місця</h2>
+<a asp-page="Create" class="btn btn-primary">Додати нове місце</a>
 <table class="table">
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Actions</th>
+        <th>Назва</th>
+        <th>Опис</th>
+        <th>Тип</th>
+        <th>Дії</th>
     </tr>
     </thead>
     <tbody>
     @foreach (var place in Model.Places)
     {
         <tr>
-            <td>@place.Id</td>
             <td>@place.Name</td>
             <td>@place.Description</td>
+            <td>@place.Type</td>
             <td>
-                <a asp-page="Edit" asp-route-id="@place.Id" class="btn btn-secondary">Edit</a>
-                <form asp-page-handler="Delete" asp-route-id="@place.Id" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
+                <a asp-page="Edit" asp-route-id="@place.Id">Редагувати</a> |
+                <a asp-page="Delete" asp-route-id="@place.Id">Видалити</a> |
+                <a asp-page="/Questions/Create" asp-route-placeId="@place.Id">Додати питання</a> |
+                <a asp-page="/Reviews/Create" asp-route-placeId="@place.Id">Додати відгук</a>
+                <a asp-page="/AdditionalInfos/Create" asp-route-placeId="@place.Id">Додати інформацію</a>
+                <a asp-page="/Places/Details" asp-route-id="@place.Id">Деталі</a>
             </td>
         </tr>
     }
-    </tbody>
 </table>
+<button type="button" onclick="window.location.href='/Index'" class="btn btn-secondary">Назад</button>

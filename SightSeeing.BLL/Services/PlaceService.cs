@@ -3,9 +3,7 @@ using SightSeeing.Abstraction.Interfaces;
 using SightSeeing.BLL.Exceptions;
 using SightSeeing.BLL.Interfaces;
 using SightSeeing.Entities.DTO;
-using SightSeeing.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using SightSeeing.Entities.Entities;
 
 namespace SightSeeing.BLL.Services
 {
@@ -22,9 +20,16 @@ namespace SightSeeing.BLL.Services
 
         public async Task<PlaceDto> GetPlaceByIdAsync(int id)
         {
+            Console.WriteLine($"GetPlaceByIdAsync викликано з id: {id}");
             var place = await _unitOfWork.Places.GetByIdAsync(id);
-            if (place == null) throw new BusinessException($"Place with ID {id} not found.");
-            return _mapper.Map<PlaceDto>(place);
+            if (place == null)
+            {
+                Console.WriteLine($"Місце з Id {id} не знайдено в базі даних.");
+                throw new BusinessException($"Place with ID {id} not found.");
+            }
+            var placeDto = _mapper.Map<PlaceDto>(place);
+            Console.WriteLine($"Місце знайдено: Id={placeDto.Id}, Name={placeDto.Name}");
+            return placeDto;
         }
 
         public async Task<IEnumerable<PlaceDto>> GetAllPlacesAsync()
