@@ -1,0 +1,181 @@
+@startuml
+package "Presentation Layer (WEB)" {
+  package "Controllers" {
+    class PlacesController {
+      - IPlaceService _placeService
+      + GetAll()
+      + GetById(int id)
+      + Create(PlaceDto placeDto)
+      + Update(int id, PlaceDto placeDto)
+      + Delete(int id)
+    }
+
+    class ReviewsController {
+      - IReviewService _reviewService
+      + GetAll()
+      + GetById(int id)
+      + Create(ReviewDto reviewDto)
+      + Update(int id, ReviewDto reviewDto)
+      + Delete(int id)
+    }
+
+    class UsersController {
+      - IUserService _userService
+      + Login(LoginDto loginDto)
+      + GetAll()
+      + GetById(int id)
+      + Create(UserDto userDto)
+      + Update(int id, UserDto userDto)
+      + Delete(int id)
+    }
+  }
+
+  package "Razor Pages" {
+    class IndexModel {
+      + OnGet()
+      + OnPostLogoutAsync()
+    }
+
+    class LoginModel {
+      - IUserService _userService
+      + OnPostAsync()
+    }
+
+    class RegisterModel {
+      - IUserService _userService
+      + OnGet()
+      + OnPostAsync()
+    }
+
+    package "Places" {
+      class CreateModel {
+        - IPlaceService _placeService
+        + OnGet()
+        + OnPostAsync()
+      }
+
+      class DeleteModel {
+        - IPlaceService _placeService
+        + OnGetAsync(int id)
+        + OnPostAsync()
+      }
+
+      class DetailsModel {
+        - IPlaceService _placeService
+        - IReviewService _reviewService
+        - IUnitOfWork _unitOfWork
+        + OnGetAsync(int id)
+      }
+
+      class EditModel {
+        - IPlaceService _placeService
+        + OnGetAsync(int id)
+        + OnPostAsync()
+      }
+
+      class IndexModel {
+        - IPlaceService _placeService
+        + OnGetAsync()
+      }
+    }
+
+    package "Questions" {
+      class AnswerModel {
+        - IAnswerService _answerService
+        - IQuestionService _questionService
+        - IPlaceService _placeService
+        - IUserService _userService
+        + OnGetAsync(int questionId)
+        + OnPostAsync()
+      }
+
+      class CreateModel {
+        - IQuestionService _questionService
+        - IPlaceService _placeService
+        - IUserService _userService
+        + OnGetAsync(int placeId)
+        + OnPostAsync()
+      }
+
+      class IndexModel {
+        - IQuestionService _questionService
+        - IAnswerService _answerService
+        - IPlaceService _placeService
+        + OnGetAsync()
+      }
+    }
+
+    package "Reviews" {
+      class CreateModel {
+        - IReviewService _reviewService
+        - IPlaceService _placeService
+        - IUserService _userService
+        + OnGetAsync(int placeId)
+        + OnPostAsync()
+      }
+
+      class EditModel {
+        - IReviewService _reviewService
+        + OnGetAsync(int id)
+        + OnPostAsync()
+      }
+
+      class IndexModel {
+        - IReviewService _reviewService
+        - IPlaceService _placeService
+        + OnGetAsync()
+      }
+    }
+
+    package "AdditionalInfos" {
+      class CreateModel {
+        - IUnitOfWork _unitOfWork
+        + OnGet(int placeId)
+        + OnPostAsync()
+      }
+    }
+  }
+}
+
+' Зв’язки контролерів із сервісами
+PlacesController --> IPlaceService
+ReviewsController --> IReviewService
+UsersController --> IUserService
+
+' Зв’язки Razor Pages із сервісами
+LoginModel --> IUserService
+RegisterModel --> IUserService
+Places.CreateModel --> IPlaceService
+Places.DeleteModel --> IPlaceService
+Places.DetailsModel --> IPlaceService
+Places.DetailsModel --> IReviewService
+Places.DetailsModel --> IUnitOfWork
+Places.EditModel --> IPlaceService
+Places.IndexModel --> IPlaceService
+Questions.AnswerModel --> IAnswerService
+Questions.AnswerModel --> IQuestionService
+Questions.AnswerModel --> IPlaceService
+Questions.AnswerModel --> IUserService
+Questions.CreateModel --> IQuestionService
+Questions.CreateModel --> IPlaceService
+Questions.CreateModel --> IUserService
+Questions.IndexModel --> IQuestionService
+Questions.IndexModel --> IAnswerService
+Questions.IndexModel --> IPlaceService
+Reviews.CreateModel --> IReviewService
+Reviews.CreateModel --> IPlaceService
+Reviews.CreateModel --> IUserService
+Reviews.EditModel --> IReviewService
+Reviews.IndexModel --> IReviewService
+Reviews.IndexModel --> IPlaceService
+AdditionalInfos.CreateModel --> IUnitOfWork
+
+' Інтерфейси BLL
+interface IPlaceService
+interface IReviewService
+interface IUserService
+interface IQuestionService
+interface IAnswerService
+interface IUnitOfWork
+
+@enduml

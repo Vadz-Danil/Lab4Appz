@@ -1,0 +1,85 @@
+@startuml Class Diagram
+entity "User" {
+  +int Id
+  +string Name
+  +string Role
+  +string Password
+  --
+  +ICollection<Review> Reviews
+  +ICollection<Question> Questions
+  +ICollection<Answer> Answers
+}
+
+entity "Place" {
+  +int Id
+  +string Name
+  +string Description
+  +string Type
+  --
+  +ICollection<Review> Reviews
+  +ICollection<Question> Questions
+  +ICollection<AdditionalInfo> AdditionalInfos
+}
+
+entity "Review" {
+  +int Id
+  +string Text
+  +int Rating
+  +int UserId
+  +int PlaceId
+  --
+  +User User
+  +Place Place
+}
+
+entity "Question" {
+  +int Id
+  +string Text
+  +int UserId
+  +int PlaceId
+  --
+  +User User
+  +Place Place
+  +ICollection<Answer> Answers
+}
+
+entity "Answer" {
+  +int Id
+  +string Text
+  +int UserId
+  +int QuestionId
+  --
+  +User User
+  +Question Question
+}
+
+entity "AdditionalInfo" {
+  +int Id
+  +string Type
+  +string Path
+  +int PlaceId
+  --
+  +Place Place
+}
+
+User "1" --o "*" Review : reviews
+User "1" --o "*" Question : questions
+User "1" --o "*" Answer : answers
+
+Place "1" --o "*" Review : reviews
+Place "1" --o "*" Question : questions
+Place "1" --o "*" AdditionalInfo : additionalInfos
+
+Question "1" --o "*" Answer : answers
+
+Review "1" --o "1" User : user
+Review "1" --o "1" Place : place
+
+Question "1" --o "1" User : user
+Question "1" --o "1" Place : place
+
+Answer "1" --o "1" User : user
+Answer "1" --o "1" Question : question
+
+AdditionalInfo "1" --o "1" Place : place
+@enduml
