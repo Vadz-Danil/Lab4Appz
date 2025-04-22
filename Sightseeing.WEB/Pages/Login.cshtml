@@ -1,0 +1,16 @@
+@page
+@model SightSeeing.WEB.Pages.LoginModel
+<h2>Вхід</h2>
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Username">Ім'я користувача</label>
+        <input asp-for="Username" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Password">Пароль</label>
+        <input asp-for="Password" class="form-control" type="password" />
+    </div>
+    <button type="submit" class="btn btn-primary">Увійти</button>
+    <div asp-validation-summary="All" class="text-danger"></div>
+</form>
+<p>Немає акаунта? <a asp-page="/Register" class="btn btn-link">Зареєструйтесь</a></p>

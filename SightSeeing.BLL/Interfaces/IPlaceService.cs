@@ -1,6 +1,4 @@
 using SightSeeing.Entities.DTO;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace SightSeeing.BLL.Interfaces
 {

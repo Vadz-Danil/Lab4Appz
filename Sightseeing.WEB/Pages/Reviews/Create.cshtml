@@ -1,0 +1,21 @@
+@page "{placeId:int}"
+@model SightSeeing.WEB.Pages.Reviews.CreateModel
+
+<h2>Додати відгук</h2>
+<p><strong>Місце:</strong> @Model.Place.Name</p>
+<form method="post" asp-page="/Reviews/Create" asp-route-placeId="@Model.Place.Id">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Review.PlaceId" />
+    <div class="form-group">
+        <label asp-for="Review.Text">Текст</label>
+        <textarea asp-for="Review.Text" class="form-control"></textarea>
+        <span asp-validation-for="Review.Text" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Review.Rating">Рейтинг</label>
+        <input asp-for="Review.Rating" class="form-control" type="number" min="1" max="5" />
+        <span asp-validation-for="Review.Rating" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+    <button type="button" onclick="window.history.back()" class="btn btn-secondary">Назад</button>
+</form>

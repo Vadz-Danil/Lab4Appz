@@ -1,0 +1,12 @@
+@page
+@model SightSeeing.WEB.Pages.IndexModel
+<h2>Домашня сторінка</h2>
+<p>Ласкаво просимо, @User.Identity?.Name!</p>
+<ul>
+    <li><a asp-page="/Places/Index">Місця</a></li>
+    <li><a asp-page="/Reviews/Index">Відгуки</a></li>
+    <li><a asp-page="/Questions/Index">Запитання</a></li>
+</ul>
+<form method="post" asp-page-handler="Logout">
+    <button type="submit" class="btn btn-link">Вийти</button>
+</form>

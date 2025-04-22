@@ -1,6 +1,4 @@
-using SightSeeing.Entities;
-using System;
-using System.Threading.Tasks;
+using SightSeeing.Entities.Entities;
 
 namespace SightSeeing.Abstraction.Interfaces
 {

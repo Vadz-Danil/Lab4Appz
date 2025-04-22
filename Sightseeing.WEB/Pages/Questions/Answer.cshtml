@@ -1,0 +1,17 @@
+@page "{questionId:int}"
+@model SightSeeing.WEB.Pages.Questions.AnswerModel
+
+<h2>Додати відповідь на запитання</h2>
+<p><strong>Текст:</strong> @Model.Question.Text</p>
+<p><strong>Місце:</strong> @Model.PlaceName</p>
+<form method="post" asp-page="/Questions/Answer" asp-route-questionId="@Model.Question.Id">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Answer.QuestionId" />
+    <div class="form-group">
+        <label asp-for="Answer.Text">Відповідь</label>
+        <textarea asp-for="Answer.Text" class="form-control"></textarea>
+        <span asp-validation-for="Answer.Text" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+    <button type="button" onclick="window.history.back()" class="btn btn-secondary">Назад</button>
+</form>

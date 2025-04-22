@@ -1,0 +1,19 @@
+@page
+@model SightSeeing.WEB.Pages.Places.CreateModel
+<h2>Додати місце</h2>
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Place.Name">Назва</label>
+        <input asp-for="Place.Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Place.Description">Опис</label>
+        <textarea asp-for="Place.Description" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="Place.Type">Тип</label>
+        <input asp-for="Place.Type" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+    <button type="button" onclick="window.history.back()" class="btn btn-secondary">Назад</button>
+</form>

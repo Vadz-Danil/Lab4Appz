@@ -1,0 +1,34 @@
+@page
+@model SightSeeing.WEB.Pages.Questions.IndexModel
+
+<h1>Запитання</h1>
+
+<p>
+    <a asp-page="/Index" class="btn btn-secondary">Повернутися в головне меню</a>
+</p>
+
+@foreach (var question in Model.Questions)
+{
+    <div class="question">
+        <p><strong>Текст:</strong> @question.Text</p>
+        <p><strong>Місце:</strong> @Model.PlaceNames[question.Id]</p>
+        <p>
+            <a asp-page="./Answer" asp-route-questionId="@question.Id">Дії</a>
+        </p>
+        @if (Model.AnswersByQuestionId.ContainsKey(question.Id) && Model.AnswersByQuestionId[question.Id].Any())
+        {
+            <h4>Відповіді:</h4>
+            <ul>
+                @foreach (var answer in Model.AnswersByQuestionId[question.Id])
+                {
+                    <li>@answer.Text</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>Відповідей немає.</p>
+        }
+        <hr />
+    </div>
+}

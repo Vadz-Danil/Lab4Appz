@@ -1,0 +1,23 @@
+@page
+@model SightSeeing.WEB.Pages.Reviews.IndexModel
+<h2>Відгуки</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Текст</th>
+        <th>Оцінка</th>
+        <th>Місце</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var review in Model.Reviews)
+    {
+        <tr>
+            <td>@review.Text</td>
+            <td>@review.Rating</td>
+            <td>@Model.PlaceNames[review.PlaceId]</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<button type="button" onclick="window.location.href='/Index'" class="btn btn-secondary">Назад</button>

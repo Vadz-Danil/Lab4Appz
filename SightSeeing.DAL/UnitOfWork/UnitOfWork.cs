@@ -1,8 +1,7 @@
 using SightSeeing.Abstraction.Interfaces;
 using SightSeeing.DAL.DbContext;
-using SightSeeing.Entities;
 using SightSeeing.DAL.Repositories;
-using System.Threading.Tasks;
+using SightSeeing.Entities.Entities;
 
 namespace SightSeeing.DAL.UnitOfWork
 {

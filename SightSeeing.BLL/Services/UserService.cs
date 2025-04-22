@@ -3,9 +3,7 @@ using SightSeeing.Abstraction.Interfaces;
 using SightSeeing.BLL.Exceptions;
 using SightSeeing.BLL.Interfaces;
 using SightSeeing.Entities.DTO;
-using SightSeeing.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using SightSeeing.Entities.Entities;
 
 namespace SightSeeing.BLL.Services
 {
@@ -19,12 +17,28 @@ namespace SightSeeing.BLL.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+        public async Task<UserDto> AuthenticateAsync(string username, string password)
+        {
+            var user = await _unitOfWork.Users.GetAllAsync()
+                .ContinueWith(t => t.Result.FirstOrDefault(u => u.Name == username));
+            if (user == null || !PasswordHash.VerifyPassword(password, user.Password))
+            {
+                return null; 
+            }
+            return _mapper.Map<UserDto>(user);
+        }
 
         public async Task<UserDto> GetUserByIdAsync(int id)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id);
             if (user == null) throw new BusinessException($"User with ID {id} not found.");
             return _mapper.Map<UserDto>(user);
+        }
+        public async Task<UserDto> GetUserByNameAsync(string username)
+        {
+            var user = await _unitOfWork.Users.GetAllAsync()
+                .ContinueWith(t => t.Result.FirstOrDefault(u => u.Name == username));
+            return user != null ? _mapper.Map<UserDto>(user) : null;
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace SightSeeing.Abstraction.Interfaces
+﻿namespace SightSeeing.Abstraction.Interfaces
 {
     public interface IRepository<T> where T : class
     {
