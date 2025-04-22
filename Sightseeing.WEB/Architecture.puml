@@ -1,0 +1,30 @@
+@startuml
+package "Presentation Layer (WEB)" {
+  [Controllers]
+  [Razor Pages]
+}
+
+package "Business Logic Layer (BLL)" {
+  [Services]
+  [Exceptions]
+  [Mapping]
+  [Helpers]
+}
+
+package "Data Access Layer (DAL)" {
+  [Repositories]
+  [UnitOfWork]
+  [DbContext]
+}
+
+package "Entities" {
+  [DTOs]
+  [Entitie]
+}
+
+"Presentation Layer (WEB)" --> "Business Logic Layer (BLL)" : uses
+"Business Logic Layer (BLL)" --> "Data Access Layer (DAL)" : uses
+"Data Access Layer (DAL)" --> "Entities" : uses
+"Business Logic Layer (BLL)" --> "Entities" : uses
+"Presentation Layer (WEB)" --> "Entities" : uses
+@enduml

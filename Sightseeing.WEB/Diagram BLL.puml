@@ -1,0 +1,89 @@
+@startuml
+interface IAnswerService {
+  + AddAnswerAsync(AnswerDto answerDto)
+  + GetAnswersByQuestionIdAsync(int questionId)
+}
+
+interface IPlaceService {
+  + GetPlaceByIdAsync(int id)
+  + GetAllPlacesAsync()
+  + AddPlaceAsync(PlaceDto placeDto)
+  + UpdatePlaceAsync(PlaceDto placeDto)
+  + DeletePlaceAsync(int id)
+}
+
+interface IQuestionService {
+  + GetQuestionByIdAsync(int id)
+  + GetAllQuestionsAsync()
+  + AddQuestionAsync(QuestionDto questionDto)
+}
+
+interface IReviewService {
+  + GetReviewByIdAsync(int id)
+  + GetAllReviewsAsync()
+  + AddReviewAsync(ReviewDto reviewDto)
+  + UpdateReviewAsync(ReviewDto reviewDto)
+  + DeleteReviewAsync(int id)
+}
+
+interface IUserService {
+  + AuthenticateAsync(string username, string password)
+  + GetUserByIdAsync(int id)
+  + GetAllUsersAsync()
+  + AddUserAsync(UserDto userDto)
+  + UpdateUserAsync(UserDto userDto)
+  + DeleteUserAsync(int id)
+}
+
+class AnswerService {
+  - IUnitOfWork _unitOfWork
+  - IQuestionService _questionService
+  - IUserService _userService
+}
+
+class PlaceService {
+  - IUnitOfWork _unitOfWork
+  - IMapper _mapper
+}
+
+class QuestionService {
+  - IUnitOfWork _unitOfWork
+  - IPlaceService _placeService
+  - IUserService _userService
+}
+
+class ReviewService {
+  - IUnitOfWork _unitOfWork
+  - IPlaceService _placeService
+  - IUserService _userService
+}
+
+class UserService {
+  - IUnitOfWork _unitOfWork
+  - IMapper _mapper
+}
+
+AnswerService .|> IAnswerService
+PlaceService .|> IPlaceService
+QuestionService .|> IQuestionService
+ReviewService .|> IReviewService
+UserService .|> IUserService
+
+AnswerService --> IUnitOfWork
+AnswerService --> IQuestionService
+AnswerService --> IUserService
+
+PlaceService --> IUnitOfWork
+PlaceService --> IMapper
+
+QuestionService --> IUnitOfWork
+QuestionService --> IPlaceService
+QuestionService --> IUserService
+
+ReviewService --> IUnitOfWork
+ReviewService --> IPlaceService
+ReviewService --> IUserService
+
+UserService --> IUnitOfWork
+UserService --> IMapper
+@enduml

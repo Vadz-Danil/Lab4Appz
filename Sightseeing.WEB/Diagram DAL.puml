@@ -1,0 +1,56 @@
+@startuml
+interface IRepository<<T>> {
+  + GetByIdAsync(int id, bool eager = false)
+  + GetAllAsync(bool eager = false)
+  + AddAsync(T entity)
+  + UpdateAsync(T entity)
+  + DeleteAsync(int id)
+}
+
+interface IUnitOfWork {
+  + Users: IRepository<User>
+  + Places: IRepository<Place>
+  + Reviews: IRepository<Review>
+  + Questions: IRepository<Question>
+  + Answers: IRepository<Answer>
+  + AdditionalInfos: IRepository<AdditionalInfo>
+  + SaveChangesAsync()
+}
+
+class "Repository<T>" {
+  - SightSeeingDbContext _context
+  - DbSet<T> _dbSet
+}
+
+class UnitOfWork {
+  - SightSeeingDbContext _context
+  - IRepository<User> _users
+  - IRepository<Place> _places
+  - IRepository<Review> _reviews
+  - IRepository<Question> _questions
+  - IRepository<Answer> _answers
+  - IRepository<AdditionalInfo> _additionalInfos
+}
+
+class SightSeeingDbContext {
+  + Users: DbSet<User>
+  + Places: DbSet<Place>
+  + Reviews: DbSet<Review>
+  + Questions: DbSet<Question>
+  + Answers: DbSet<Answer>
+  + AdditionalInfos: DbSet<AdditionalInfo>
+}
+
+"Repository<T>" .|> "IRepository<<T>>"
+
+UnitOfWork .|> IUnitOfWork
+
+"Repository<T>" --> SightSeeingDbContext
+UnitOfWork --> SightSeeingDbContext
+UnitOfWork --> "IRepository<User>"
+UnitOfWork --> "IRepository<Place>"
+UnitOfWork --> "IRepository<Review>"
+UnitOfWork --> "IRepository<Question>"
+UnitOfWork --> "IRepository<Answer>"
+UnitOfWork --> "IRepository<AdditionalInfo>"
+@enduml
