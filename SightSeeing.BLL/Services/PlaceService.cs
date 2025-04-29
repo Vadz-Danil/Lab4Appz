@@ -20,15 +20,12 @@ namespace SightSeeing.BLL.Services
 
         public async Task<PlaceDto> GetPlaceByIdAsync(int id)
         {
-            Console.WriteLine($"GetPlaceByIdAsync викликано з id: {id}");
             var place = await _unitOfWork.Places.GetByIdAsync(id);
             if (place == null)
             {
-                Console.WriteLine($"Місце з Id {id} не знайдено в базі даних.");
                 throw new BusinessException($"Place with ID {id} not found.");
             }
             var placeDto = _mapper.Map<PlaceDto>(place);
-            Console.WriteLine($"Місце знайдено: Id={placeDto.Id}, Name={placeDto.Name}");
             return placeDto;
         }
 
