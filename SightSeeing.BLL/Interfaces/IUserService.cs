@@ -6,9 +6,6 @@ namespace SightSeeing.BLL.Interfaces
     {
         Task<UserDto> AuthenticateAsync(string username, string password);
         Task<UserDto> GetUserByIdAsync(int id);
-        Task<IEnumerable<UserDto>> GetAllUsersAsync();
         Task AddUserAsync(UserDto userDto);
-        Task UpdateUserAsync(UserDto userDto);
-        Task DeleteUserAsync(int id);
     }
 }

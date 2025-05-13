@@ -47,10 +47,10 @@ namespace SightSeeing.BLL.Services
         {
             var answers = await _unitOfWork.Answers.GetAllAsync();
             return answers
-                .Where(a => a.QuestionId == questionId)
+                .Where(a => a!.QuestionId == questionId)
                 .Select(a => new AnswerDto
                 {
-                    Id = a.Id,
+                    Id = a!.Id,
                     QuestionId = a.QuestionId,
                     UserId = a.UserId,
                     Text = a.Text

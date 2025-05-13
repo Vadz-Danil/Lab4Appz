@@ -13,7 +13,8 @@ namespace SightSeeing.WEB.Pages.Places
             _placeService = placeService;
         }
         [BindProperty]
-        public PlaceDto Place { get; set; }
+        public PlaceDto Place { get; set; } = null!;
+
         public async Task<IActionResult> OnGetAsync(int id)
         {
             Place = await _placeService.GetPlaceByIdAsync(id);
@@ -39,7 +40,7 @@ namespace SightSeeing.WEB.Pages.Places
                 await _placeService.UpdatePlaceAsync(Place);
                 return RedirectToPage("Index");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ModelState.AddModelError("", "Виникла помилка при оновленні місця. Спробуйте ще раз.");
                 return Page();

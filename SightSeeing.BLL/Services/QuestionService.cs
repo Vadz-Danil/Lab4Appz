@@ -65,51 +65,11 @@ namespace SightSeeing.BLL.Services
             var questions = await _unitOfWork.Questions.GetAllAsync();
             return questions.Select(q => new QuestionDto
             {
-                Id = q.Id,
+                Id = q!.Id,
                 PlaceId = q.PlaceId,
                 UserId = q.UserId,
                 Text = q.Text
             });
-        }
-
-        public async Task UpdateQuestionAsync(QuestionDto questionDto)
-        {
-            var existingQuestion = await _unitOfWork.Questions.GetByIdAsync(questionDto.Id);
-            if (existingQuestion == null)
-            {
-                throw new InvalidOperationException($"Запитання з Id {questionDto.Id} не знайдено.");
-            }
-
-            var place = await _placeService.GetPlaceByIdAsync(questionDto.PlaceId);
-            if (place == null)
-            {
-                throw new InvalidOperationException($"Місце з Id {questionDto.PlaceId} не існує.");
-            }
-
-            var user = await _userService.GetUserByIdAsync(questionDto.UserId);
-            if (user == null)
-            {
-                throw new InvalidOperationException($"Користувач з Id {questionDto.UserId} не існує.");
-            }
-
-            existingQuestion.PlaceId = questionDto.PlaceId;
-            existingQuestion.UserId = questionDto.UserId;
-            existingQuestion.Text = questionDto.Text;
-
-            await _unitOfWork.Questions.UpdateAsync(existingQuestion);
-            await _unitOfWork.SaveChangesAsync();
-        }
-
-        public async Task DeleteQuestionAsync(int id)
-        {
-            var question = await _unitOfWork.Questions.GetByIdAsync(id);
-            if (question == null)
-            {
-                throw new InvalidOperationException($"Запитання з Id {id} не знайдено.");
-            }
-
-            await _unitOfWork.Questions.DeleteAsync(id);
-            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

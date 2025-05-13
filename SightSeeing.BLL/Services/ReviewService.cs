@@ -49,7 +49,7 @@ namespace SightSeeing.BLL.Services
             var reviews = await _unitOfWork.Reviews.GetAllAsync();
             return reviews.Select(r => new ReviewDto
             {
-                Id = r.Id,
+                Id = r!.Id,
                 PlaceId = r.PlaceId,
                 UserId = r.UserId,
                 Text = r.Text,
@@ -101,18 +101,6 @@ namespace SightSeeing.BLL.Services
             existingReview.Rating = reviewDto.Rating;
 
             await _unitOfWork.Reviews.UpdateAsync(existingReview);
-            await _unitOfWork.SaveChangesAsync();
-        }
-
-        public async Task DeleteReviewAsync(int id)
-        {
-            var review = await _unitOfWork.Reviews.GetByIdAsync(id);
-            if (review == null)
-            {
-                throw new InvalidOperationException($"Відгук з Id {id} не знайдено.");
-            }
-
-            await _unitOfWork.Reviews.DeleteAsync(id);
             await _unitOfWork.SaveChangesAsync();
         }
     }

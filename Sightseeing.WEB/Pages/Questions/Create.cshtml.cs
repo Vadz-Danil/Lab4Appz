@@ -20,15 +20,15 @@ namespace SightSeeing.WEB.Pages.Questions
         }
 
         [BindProperty]
-        public QuestionDto Question { get; set; }
+        public QuestionDto Question { get; set; } = null!;
 
-        public PlaceDto Place { get; set; }
+        public PlaceDto Place { get; set; } = null!;
 
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync(int placeId)
         {
-            if (!User.Identity.IsAuthenticated)
+            if (!User.Identity!.IsAuthenticated)
             {
                 ErrorMessage = "Ви не автентифіковані. Увійдіть, щоб додавати запитання.";
                 return Page();
@@ -52,7 +52,7 @@ namespace SightSeeing.WEB.Pages.Questions
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!User.Identity.IsAuthenticated)
+            if (!User.Identity!.IsAuthenticated)
             {
                 ErrorMessage = "Ви не автентифіковані. Увійдіть, щоб додавати запитання.";
                 return Page();

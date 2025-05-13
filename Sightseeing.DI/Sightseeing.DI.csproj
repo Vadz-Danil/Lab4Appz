@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SightSeeing.Abstraction\SightSeeing.Abstraction.csproj" />
+      <ProjectReference Include="..\SightSeeing.BLL\SightSeeing.BLL.csproj" />
+      <ProjectReference Include="..\SightSeeing.DAL\SightSeeing.DAL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="14.0.0" />
+      <PackageReference Include="Ninject" Version="3.3.6" />
+    </ItemGroup>
+
+</Project>

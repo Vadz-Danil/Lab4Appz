@@ -22,10 +22,10 @@ namespace SightSeeing.WEB.Pages.Questions
         }
 
         [BindProperty]
-        public AnswerDto Answer { get; set; }
+        public AnswerDto Answer { get; set; } = null!;
 
-        public QuestionDto Question { get; set; }
-        public string PlaceName { get; set; }
+        public QuestionDto Question { get; set; } = null!;
+        public string PlaceName { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync(int questionId)
         {

@@ -26,13 +26,6 @@ namespace SightSeeing.WEB.Controllers
             return Ok(user);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var users = await _userService.GetAllUsersAsync();
-            return Ok(users);
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -52,21 +45,6 @@ namespace SightSeeing.WEB.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UserDto userDto)
-        {
-            if (id != userDto.Id) return BadRequest("ID mismatch.");
-            await _userService.UpdateUserAsync(userDto);
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await _userService.DeleteUserAsync(id);
-            return NoContent();
         }
     }
 }

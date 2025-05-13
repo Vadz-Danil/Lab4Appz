@@ -20,9 +20,9 @@ namespace SightSeeing.WEB.Pages.Reviews
         }
 
         [BindProperty]
-        public ReviewDto Review { get; set; }
+        public ReviewDto Review { get; set; } = null!;
 
-        public PlaceDto Place { get; set; }
+        public PlaceDto Place { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync(int placeId)
         {

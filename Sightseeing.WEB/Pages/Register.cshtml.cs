@@ -16,7 +16,7 @@ namespace SightSeeing.WEB.Pages
         }
 
         [BindProperty]
-        public UserDto User { get; set; }
+        public new UserDto User { get; set; } = null!;
 
         public void OnGet() { }
 

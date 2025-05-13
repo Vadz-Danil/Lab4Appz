@@ -13,7 +13,8 @@ namespace SightSeeing.WEB.Pages.Places
             _placeService = placeService;
         }
         [BindProperty]
-        public PlaceDto Place { get; set; }
+        public PlaceDto Place { get; set; } = null!;
+
         public void OnGet()
         {
             Place = new PlaceDto();

@@ -8,6 +8,5 @@ namespace SightSeeing.BLL.Interfaces
         Task<IEnumerable<ReviewDto>> GetAllReviewsAsync();
         Task AddReviewAsync(ReviewDto reviewDto);
         Task UpdateReviewAsync(ReviewDto reviewDto);
-        Task DeleteReviewAsync(int id);
     }
 }

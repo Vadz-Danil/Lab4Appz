@@ -11,7 +11,8 @@ namespace SightSeeing.WEB.Pages.Places
         {
             _placeService = placeService;
         }
-        public IEnumerable<PlaceDto> Places { get; set; }
+        public IEnumerable<PlaceDto> Places { get; set; } = null!;
+
         public async Task OnGetAsync()
         {
             Places = await _placeService.GetAllPlacesAsync();
