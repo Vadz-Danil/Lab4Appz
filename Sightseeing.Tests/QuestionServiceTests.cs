@@ -29,7 +29,7 @@ namespace SightSeeing.Tests
             _questionService = new QuestionService(unitOfWorkMock, placeServiceMock, userServiceMock);
             
             Fixture.Customize<QuestionDto>(c => c
-                .With(q => q.Text, "Valid question " + Fixture.Create<int>().ToString()));
+                .With(q => q.Text, "Valid question " + Fixture.Create<int>()));
         }
 
         [Test]

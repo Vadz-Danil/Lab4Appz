@@ -27,12 +27,12 @@ namespace SightSeeing.Tests
             _placeService = new PlaceService(unitOfWorkMock, mapperMock);
 
             Fixture.Customize<PlaceDto>(c => c
-                .With(p => p.Name, "Valid place " + Fixture.Create<int>().ToString())
-                .With(p => p.Description, "Valid description " + Fixture.Create<int>().ToString())
+                .With(p => p.Name, "Valid place " + Fixture.Create<int>())
+                .With(p => p.Description, "Valid description " + Fixture.Create<int>())
                 .With(p => p.Type, "Monument"));
             Fixture.Customize<Place>(c => c
-                .With(p => p.Name, "Valid place " + Fixture.Create<int>().ToString())
-                .With(p => p.Description, "Valid description " + Fixture.Create<int>().ToString())
+                .With(p => p.Name, "Valid place " + Fixture.Create<int>())
+                .With(p => p.Description, "Valid description " + Fixture.Create<int>())
                 .With(p => p.Type, "Monument"));
         }
 

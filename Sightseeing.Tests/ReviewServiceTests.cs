@@ -29,10 +29,10 @@ namespace SightSeeing.Tests
             _reviewService = new ReviewService(unitOfWorkMock, placeServiceMock, userServiceMock);
 
             Fixture.Customize<ReviewDto>(c => c
-                .With(r => r.Text, "Valid review " + Fixture.Create<int>().ToString())
+                .With(r => r.Text, "Valid review " + Fixture.Create<int>())
                 .With(r => r.Rating, 5));
             Fixture.Customize<Review>(c => c
-                .With(r => r.Text, "Valid review " + Fixture.Create<int>().ToString())
+                .With(r => r.Text, "Valid review " + Fixture.Create<int>())
                 .With(r => r.Rating, 5));
         }
 

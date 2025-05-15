@@ -28,11 +28,11 @@ namespace SightSeeing.Tests
             _userService = new UserService(unitOfWorkMock, mapperMock);
             
             Fixture.Customize<UserDto>(c => c
-                .With(u => u.Name, "ValidUser" + Fixture.Create<uint>().ToString())
+                .With(u => u.Name, "ValidUser" + Fixture.Create<uint>())
                 .With(u => u.Password, "ValidPass123")
                 .With(u => u.Role, "User"));
             Fixture.Customize<User>(c => c
-                .With(u => u.Name, "ValidUser" + Fixture.Create<uint>().ToString())
+                .With(u => u.Name, "ValidUser" + Fixture.Create<uint>())
                 .With(u => u.Password, PasswordHash.HashPassword("ValidPass123"))
                 .With(u => u.Role, "User"));
         }
@@ -109,7 +109,7 @@ namespace SightSeeing.Tests
         {
             var userDto = Fixture.Create<UserDto>();
             var user = Fixture.Create<User>();
-            user.Password = PasswordHash.HashPassword(userDto.Password); // Встановлюємо правильний хеш пароля
+            user.Password = PasswordHash.HashPassword(userDto.Password);
             Kernel.Get<IMapper>().Map<User>(userDto).Returns(user);
             
             await _userService.AddUserAsync(userDto);
