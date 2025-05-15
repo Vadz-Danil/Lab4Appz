@@ -1,30 +1,75 @@
 @startuml
-package "Presentation Layer (WEB)" {
-  [Controllers]
-  [Razor Pages]
+skinparam monochrome true
+
+package "WEB" {
+    [PlacesController]
+    [ReviewsController]
+    [UsersController]
+    [Razor Pages]
+    note right: "Контролери API та Razor Pages\nвикликають сервіси BLL"
 }
 
-package "Business Logic Layer (BLL)" {
-  [Services]
-  [Exceptions]
-  [Mapping]
-  [Helpers]
+package "BLL" {
+    [AnswerService]
+    [PlaceService]
+    [QuestionService]
+    [ReviewService]
+    [UserService]
+    [MappingProfile]
+    note right: "Сервіси бізнес-логіки\nзвертаються до DAL через UnitOfWork"
 }
 
-package "Data Access Layer (DAL)" {
-  [Repositories]
-  [UnitOfWork]
-  [DbContext]
+package "DAL" {
+    [SightSeeingDbContext]
+    [Repository<T>]
+    [UnitOfWork]
+    note right: "Репозиторії та контекст БД\nпрацюють із сутностями"
 }
 
 package "Entities" {
-  [DTOs]
-  [Entitie]
+    [Answer]
+    [Place]
+    [Question]
+    [Review]
+    [User]
+    [AdditionalInfo]
+    [AnswerDto]
+    [PlaceDto]
+    [QuestionDto]
+    [ReviewDto]
+    [UserDto]
+    note right: "Сутності БД та DTO\nдля передачі даних"
 }
 
-"Presentation Layer (WEB)" --> "Business Logic Layer (BLL)" : uses
-"Business Logic Layer (BLL)" --> "Data Access Layer (DAL)" : uses
-"Data Access Layer (DAL)" --> "Entities" : uses
-"Business Logic Layer (BLL)" --> "Entities" : uses
-"Presentation Layer (WEB)" --> "Entities" : uses
+package "Abstraction" {
+    [IRepository<T>]
+    [IUnitOfWork]
+    note right: "Інтерфейси для репозиторіїв\nта Unit of Work"
+}
+
+package "DI" {
+    [ServiceModule]
+    [BllDependencyRegistration]
+    [DalDependencyRegistration]
+    note right: "Налаштування ін’єкції залежностей\nдля сервісів і репозиторіїв"
+}
+
+package "Tests" {
+    [AnswerServiceTests]
+    [PlaceServiceTests]
+    [QuestionServiceTests]
+    [ReviewServiceTests]
+    [UserServiceTests]
+    note right: "Юніт-тести для перевірки\nбізнес-логіки"
+}
+
+"WEB" --> "BLL" : "використовує"
+"BLL" --> "DAL" : "використовує"
+"DAL" --> "Entities" : "використовує"
+"BLL" ..> "Abstraction" : "реалізує"
+"DAL" ..> "Abstraction" : "реалізує"
+"DI" --> "BLL" : "налаштовує"
+"DI" --> "DAL" : "налаштовує"
+"Tests" --> "BLL" : "тестує"
+
 @enduml

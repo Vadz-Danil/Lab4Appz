@@ -1,56 +1,73 @@
-@startuml
-interface IRepository<<T>> {
-  + GetByIdAsync(int id, bool eager = false)
-  + GetAllAsync(bool eager = false)
-  + AddAsync(T entity)
-  + UpdateAsync(T entity)
-  + DeleteAsync(int id)
+@startuml DAL
+
+class SightSeeingDbContext {
+    +DbSet<User> Users
+    +DbSet<Place> Places
+    +DbSet<Review> Reviews
+    +DbSet<Question> Questions
+    +DbSet<Answer> Answers
+    +DbSet<AdditionalInfo> AdditionalInfos
+}
+
+interface IRepository {
+    +GetByIdAsync(id: int, eager: bool): T
+    +GetAllAsync(eager: bool): IEnumerable<T>
+    +AddAsync(entity: T)
+    +UpdateAsync(entity: T)
+    +DeleteAsync(id: int)
+}
+
+class Repository {
+    -_dbSet: DbSet<T>
+    +Repository(context: SightSeeingDbContext)
+    +GetByIdAsync(id: int, eager: bool): T
+    +GetAllAsync(eager: bool): IEnumerable<T>
+    +AddAsync(entity: T)
+    +UpdateAsync(entity: T)
+    +DeleteAsync(id: int)
 }
 
 interface IUnitOfWork {
-  + Users: IRepository<User>
-  + Places: IRepository<Place>
-  + Reviews: IRepository<Review>
-  + Questions: IRepository<Question>
-  + Answers: IRepository<Answer>
-  + AdditionalInfos: IRepository<AdditionalInfo>
-  + SaveChangesAsync()
-}
-
-class "Repository<T>" {
-  - SightSeeingDbContext _context
-  - DbSet<T> _dbSet
+    +Users: IRepository<User>
+    +Places: IRepository<Place>
+    +Reviews: IRepository<Review>
+    +Questions: IRepository<Question>
+    +Answers: IRepository<Answer>
+    +AdditionalInfos: IRepository<AdditionalInfo>
+    +SaveChangesAsync(): int
 }
 
 class UnitOfWork {
-  - SightSeeingDbContext _context
-  - IRepository<User> _users
-  - IRepository<Place> _places
-  - IRepository<Review> _reviews
-  - IRepository<Question> _questions
-  - IRepository<Answer> _answers
-  - IRepository<AdditionalInfo> _additionalInfos
+    -_context: SightSeeingDbContext
+    -_users: IRepository<User>
+    -_places: IRepository<Place>
+    -_reviews: IRepository<Review>
+    -_questions: IRepository<Question>
+    -_answers: IRepository<Answer>
+    -_additionalInfos: IRepository<AdditionalInfo>
+    +UnitOfWork(context: SightSeeingDbContext)
+    +Users: IRepository<User>
+    +Places: IRepository<Place>
+    +Reviews: IRepository<Review>
+    +Questions: IRepository<Question>
+    +Answers: IRepository<Answer>
+    +AdditionalInfos: IRepository<AdditionalInfo>
+    +SaveChangesAsync(): int
 }
 
-class SightSeeingDbContext {
-  + Users: DbSet<User>
-  + Places: DbSet<Place>
-  + Reviews: DbSet<Review>
-  + Questions: DbSet<Question>
-  + Answers: DbSet<Answer>
-  + AdditionalInfos: DbSet<AdditionalInfo>
-}
+Repository ..|> IRepository
+UnitOfWork ..|> IUnitOfWork
+UnitOfWork --> SightSeeingDbContext : uses
+Repository --> SightSeeingDbContext : uses
 
-"Repository<T>" .|> "IRepository<<T>>"
+note right of IRepository
+  Узагальнений інтерфейс для CRUD-операцій
+  з сутностями
+end note
 
-UnitOfWork .|> IUnitOfWork
+note right of UnitOfWork
+  Координує роботу кількох репозиторіїв
+  та збереження змін у базі даних
+end note
 
-"Repository<T>" --> SightSeeingDbContext
-UnitOfWork --> SightSeeingDbContext
-UnitOfWork --> "IRepository<User>"
-UnitOfWork --> "IRepository<Place>"
-UnitOfWork --> "IRepository<Review>"
-UnitOfWork --> "IRepository<Question>"
-UnitOfWork --> "IRepository<Answer>"
-UnitOfWork --> "IRepository<AdditionalInfo>"
 @enduml

@@ -1,0 +1,47 @@
+@startuml DI
+
+class ServiceModule {
+    +void Load()
+}
+
+class BllDependencyRegistration {
+    +void AddSightSeeingBll(IServiceCollection services)
+}
+
+class DalDependencyRegistration {
+    +void AddSightSeeingDal(IServiceCollection services, string connectionString)
+}
+
+ServiceModule --> IUnitOfWork : binds
+ServiceModule --> IUserService : binds
+ServiceModule --> IPlaceService : binds
+ServiceModule --> IReviewService : binds
+ServiceModule --> IQuestionService : binds
+ServiceModule --> IAnswerService : binds
+
+BllDependencyRegistration --> IUserService : registers
+BllDependencyRegistration --> IPlaceService : registers
+BllDependencyRegistration --> IReviewService : registers
+BllDependencyRegistration --> IQuestionService : registers
+BllDependencyRegistration --> IAnswerService : registers
+BllDependencyRegistration --> IMapper : registers
+
+DalDependencyRegistration --> IUnitOfWork : registers
+DalDependencyRegistration --> SightSeeingDbContext : registers
+
+note right of ServiceModule
+  Ninject-модуль для прив’язки
+  інтерфейсів до реалізацій
+end note
+
+note right of BllDependencyRegistration
+  Реєстрація сервісів BLL
+  в ASP.NET Core DI
+end note
+
+note right of DalDependencyRegistration
+  Реєстрація компонентів DAL
+  в ASP.NET Core DI
+end note
+
+@enduml
