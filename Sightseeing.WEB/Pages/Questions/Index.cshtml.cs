@@ -17,9 +17,9 @@ namespace SightSeeing.WEB.Pages.Questions
             _placeService = placeService;
         }
 
-        public IList<QuestionDto> Questions { get; set; }
-        public IDictionary<int, IList<AnswerDto>> AnswersByQuestionId { get; set; }
-        public IDictionary<int, string> PlaceNames { get; set; }
+        public IList<QuestionDto> Questions { get; set; } = null!;
+        public IDictionary<int, IList<AnswerDto>> AnswersByQuestionId { get; set; } = null!;
+        public IDictionary<int, string> PlaceNames { get; set; } = null!;
 
         public async Task OnGetAsync()
         {

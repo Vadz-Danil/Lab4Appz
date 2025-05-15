@@ -11,7 +11,7 @@
     <div>
         @foreach (var info in Model.AdditionalInfos)
         {
-            <p>@info.Type: @info.Path</p>
+            <p>@info!.Type: @info.Path</p>
         }
     </div>
 }

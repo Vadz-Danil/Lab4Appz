@@ -17,7 +17,7 @@ namespace SightSeeing.WEB.Pages.AdditionalInfos
         }
 
         [BindProperty]
-        public AdditionalInfo AdditionalInfo { get; set; }
+        public AdditionalInfo? AdditionalInfo { get; set; }
 
         public IActionResult OnGet(int placeId)
         {

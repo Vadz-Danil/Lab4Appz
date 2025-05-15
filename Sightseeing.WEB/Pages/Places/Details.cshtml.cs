@@ -22,10 +22,10 @@ namespace SightSeeing.WEB.Pages.Places
             _unitOfWork = unitOfWork;
         }
 
-        public PlaceDto Place { get; set; }
-        public IEnumerable<ReviewDto> Reviews { get; set; }
-        public IEnumerable<Question> Questions { get; set; }
-        public IEnumerable<AdditionalInfo> AdditionalInfos { get; set; }
+        public PlaceDto Place { get; set; } = null!;
+        public IEnumerable<ReviewDto> Reviews { get; set; } = null!;
+        public IEnumerable<Question?> Questions { get; set; } = null!;
+        public IEnumerable<AdditionalInfo?> AdditionalInfos { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -37,9 +37,9 @@ namespace SightSeeing.WEB.Pages.Places
             Reviews = await _reviewService.GetAllReviewsAsync();
             Reviews = Reviews.Where(r => r.PlaceId == id);
             Questions = await _unitOfWork.Questions.GetAllAsync();
-            Questions = Questions.Where(q => q.PlaceId == id);
+            Questions = Questions.Where(q => q!.PlaceId == id);
             AdditionalInfos = await _unitOfWork.AdditionalInfos.GetAllAsync();
-            AdditionalInfos = AdditionalInfos.Where(ai => ai.PlaceId == id);
+            AdditionalInfos = AdditionalInfos.Where(ai => ai!.PlaceId == id);
             return Page();
         }
     }

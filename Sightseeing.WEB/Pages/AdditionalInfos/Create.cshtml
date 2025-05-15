@@ -6,22 +6,22 @@
 <div asp-validation-summary="All" class="text-danger"></div>
 
 <form method="post">
-    <input type="hidden" asp-for="AdditionalInfo.PlaceId" />
+    <input type="hidden" asp-for="AdditionalInfo!.PlaceId" />
     <div>
-        <label asp-for="AdditionalInfo.Type">Тип:</label>
-        <select asp-for="AdditionalInfo.Type">
+        <label asp-for="AdditionalInfo!.Type">Тип:</label>
+        <select asp-for="AdditionalInfo!.Type">
             <option value="">Виберіть тип</option>
             <option value="Фото">Фото</option>
             <option value="Відео">Відео</option>
             <option value="Документ">Документ</option>
         </select>
-        <span asp-validation-for="AdditionalInfo.Type" class="text-danger"></span>
+        <span asp-validation-for="AdditionalInfo!.Type" class="text-danger"></span>
     </div>
     <div>
-        <label asp-for="AdditionalInfo.Path">Шлях до файлу:</label>
-        <input asp-for="AdditionalInfo.Path" />
-        <span asp-validation-for="AdditionalInfo.Path" class="text-danger"></span>
+        <label asp-for="AdditionalInfo!.Path">Шлях до файлу:</label>
+        <input asp-for="AdditionalInfo!.Path" />
+        <span asp-validation-for="AdditionalInfo!.Path" class="text-danger"></span>
     </div>
     <button type="submit">Додати</button>
-    <a asp-page="/Places/Index" asp-route-id="@Model.AdditionalInfo.PlaceId">Назад</a>
+    <a asp-page="/Places/Index" asp-route-id="@Model.AdditionalInfo!.PlaceId">Назад</a>
 </form>

@@ -35,20 +35,5 @@ namespace SightSeeing.WEB.Controllers
             await _reviewService.AddReviewAsync(reviewDto);
             return CreatedAtAction(nameof(GetById), new { id = reviewDto.Id }, reviewDto);
         }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] ReviewDto reviewDto)
-        {
-            if (id != reviewDto.Id) return BadRequest("ID mismatch.");
-            await _reviewService.UpdateReviewAsync(reviewDto);
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await _reviewService.DeleteReviewAsync(id);
-            return NoContent();
-        }
     }
 }

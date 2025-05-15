@@ -2,6 +2,7 @@ using SightSeeing.BLL.Interfaces;
 using SightSeeing.Entities.DTO;
 using SightSeeing.Abstraction.Interfaces;
 using SightSeeing.Entities.Entities;
+using SightSeeing.BLL.Exceptions;
 
 namespace SightSeeing.BLL.Services
 {
@@ -20,17 +21,16 @@ namespace SightSeeing.BLL.Services
 
         public async Task AddAnswerAsync(AnswerDto answerDto)
         {
+            if (string.IsNullOrEmpty(answerDto.Text))
+                throw new ValidationException("Вміст відповіді не може бути порожнім.");
+
             var question = await _questionService.GetQuestionByIdAsync(answerDto.QuestionId);
             if (question == null)
-            {
-                throw new InvalidOperationException($"Запитання з Id {answerDto.QuestionId} не існує.");
-            }
-            
+                throw new BusinessException($"Запитання з Id {answerDto.QuestionId} не існує.");
+
             var user = await _userService.GetUserByIdAsync(answerDto.UserId);
             if (user == null)
-            {
-                throw new InvalidOperationException($"Користувач з Id {answerDto.UserId} не існує.");
-            }
+                throw new BusinessException($"Користувач з Id {answerDto.UserId} не існує.");
 
             var answer = new Answer
             {
@@ -47,10 +47,10 @@ namespace SightSeeing.BLL.Services
         {
             var answers = await _unitOfWork.Answers.GetAllAsync();
             return answers
-                .Where(a => a.QuestionId == questionId)
+                .Where(a => a!.QuestionId == questionId)
                 .Select(a => new AnswerDto
                 {
-                    Id = a.Id,
+                    Id = a!.Id,
                     QuestionId = a.QuestionId,
                     UserId = a.UserId,
                     Text = a.Text

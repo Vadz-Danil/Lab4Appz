@@ -8,12 +8,12 @@ namespace SightSeeing.DAL.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly SightSeeingDbContext _context;
-        private IRepository<User> _users;
-        private IRepository<Place> _places;
-        private IRepository<Review> _reviews;
-        private IRepository<Question> _questions;
-        private IRepository<Answer> _answers;
-        private IRepository<AdditionalInfo> _additionalInfos;
+        private IRepository<User> _users = null!;
+        private IRepository<Place> _places = null!;
+        private IRepository<Review> _reviews = null!;
+        private IRepository<Question> _questions = null!;
+        private IRepository<Answer> _answers = null!;
+        private IRepository<AdditionalInfo> _additionalInfos = null!;
 
         public UnitOfWork(SightSeeingDbContext context)
         {

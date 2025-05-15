@@ -17,10 +17,10 @@ namespace SightSeeing.WEB.Pages
         }
 
         [BindProperty]
-        public string Username { get; set; }
+        public string Username { get; set; } = null!;
 
         [BindProperty]
-        public string Password { get; set; }
+        public string Password { get; set; } = null!;
 
         public async Task<IActionResult> OnPostAsync()
         {

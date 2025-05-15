@@ -15,7 +15,7 @@ namespace SightSeeing.WEB.Pages.Reviews
         }
 
         [BindProperty]
-        public ReviewDto Review { get; set; }
+        public ReviewDto Review { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync(int id)
         {

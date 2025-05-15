@@ -15,8 +15,8 @@ namespace SightSeeing.WEB.Pages.Reviews
             _placeService = placeService;
         }
 
-        public IList<ReviewDto> Reviews { get; set; }
-        public Dictionary<int, string> PlaceNames { get; set; }
+        public IList<ReviewDto> Reviews { get; set; } = null!;
+        public Dictionary<int, string> PlaceNames { get; set; } = null!;
 
         public async Task OnGetAsync()
         {

@@ -17,7 +17,7 @@ namespace SightSeeing.WEB.Pages.Places
         }
 
         [BindProperty]
-        public PlaceDto Place { get; set; }
+        public PlaceDto Place { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
