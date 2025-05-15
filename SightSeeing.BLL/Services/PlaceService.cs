@@ -22,11 +22,8 @@ namespace SightSeeing.BLL.Services
         {
             var place = await _unitOfWork.Places.GetByIdAsync(id);
             if (place == null)
-            {
-                throw new BusinessException($"Place with ID {id} not found.");
-            }
-            var placeDto = _mapper.Map<PlaceDto>(place);
-            return placeDto;
+                throw new BusinessException($"Місце з Id {id} не знайдено.");
+            return _mapper.Map<PlaceDto>(place);
         }
 
         public async Task<IEnumerable<PlaceDto>> GetAllPlacesAsync()
@@ -37,6 +34,9 @@ namespace SightSeeing.BLL.Services
 
         public async Task AddPlaceAsync(PlaceDto placeDto)
         {
+            if (string.IsNullOrEmpty(placeDto.Name))
+                throw new ValidationException("Назва місця не може бути порожньою.");
+
             var place = _mapper.Map<Place>(placeDto);
             await _unitOfWork.Places.AddAsync(place);
             await _unitOfWork.SaveChangesAsync();
@@ -44,13 +44,26 @@ namespace SightSeeing.BLL.Services
 
         public async Task UpdatePlaceAsync(PlaceDto placeDto)
         {
-            var place = _mapper.Map<Place>(placeDto);
-            await _unitOfWork.Places.UpdateAsync(place);
+            var existingPlace = await _unitOfWork.Places.GetByIdAsync(placeDto.Id);
+            if (existingPlace == null)
+            {
+                throw new BusinessException($"Місце з Id {placeDto.Id} не знайдено.");
+            }
+
+            existingPlace.Name = placeDto.Name;
+            existingPlace.Description = placeDto.Description;
+            existingPlace.Type = placeDto.Type;
+
+            await _unitOfWork.Places.UpdateAsync(existingPlace);
             await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task DeletePlaceAsync(int id)
         {
+            var place = await _unitOfWork.Places.GetByIdAsync(id);
+            if (place == null)
+                throw new BusinessException($"Місце з Id {id} не знайдено.");
+
             await _unitOfWork.Places.DeleteAsync(id);
             await _unitOfWork.SaveChangesAsync();
         }

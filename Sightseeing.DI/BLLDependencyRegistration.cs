@@ -7,7 +7,7 @@ namespace Sightseeing.DI
 {
     public static class BllDependencyRegistration
     {
-        public static IServiceCollection AddSightSeeingBll(this IServiceCollection services)
+        public static void AddSightSeeingBll(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPlaceService, PlaceService>();
@@ -16,8 +16,6 @@ namespace Sightseeing.DI
             services.AddScoped<IAnswerService, AnswerService>();
             
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
-
-            return services;
         }
     }
 }

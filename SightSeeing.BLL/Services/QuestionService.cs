@@ -2,6 +2,7 @@ using SightSeeing.BLL.Interfaces;
 using SightSeeing.Entities.DTO;
 using SightSeeing.Abstraction.Interfaces;
 using SightSeeing.Entities.Entities;
+using SightSeeing.BLL.Exceptions;
 
 namespace SightSeeing.BLL.Services
 {
@@ -20,17 +21,16 @@ namespace SightSeeing.BLL.Services
 
         public async Task AddQuestionAsync(QuestionDto questionDto)
         {
+            if (string.IsNullOrEmpty(questionDto.Text))
+                throw new ValidationException("Вміст запитання не може бути порожнім.");
+
             var place = await _placeService.GetPlaceByIdAsync(questionDto.PlaceId);
             if (place == null)
-            {
-                throw new InvalidOperationException($"Місце з Id {questionDto.PlaceId} не існує.");
-            }
-            
+                throw new BusinessException($"Місце з Id {questionDto.PlaceId} не існує.");
+
             var user = await _userService.GetUserByIdAsync(questionDto.UserId);
             if (user == null)
-            {
-                throw new InvalidOperationException($"Користувач з Id {questionDto.UserId} не існує.");
-            }
+                throw new BusinessException($"Користувач з Id {questionDto.UserId} не існує.");
 
             var question = new Question
             {
@@ -47,9 +47,7 @@ namespace SightSeeing.BLL.Services
         {
             var question = await _unitOfWork.Questions.GetByIdAsync(id);
             if (question == null)
-            {
-                throw new InvalidOperationException($"Запитання з Id {id} не знайдено.");
-            }
+                throw new BusinessException($"Запитання з Id {id} не знайдено.");
 
             return new QuestionDto
             {

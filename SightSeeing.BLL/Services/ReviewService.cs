@@ -2,6 +2,7 @@ using SightSeeing.BLL.Interfaces;
 using SightSeeing.Entities.DTO;
 using SightSeeing.Abstraction.Interfaces;
 using SightSeeing.Entities.Entities;
+using SightSeeing.BLL.Exceptions;
 
 namespace SightSeeing.BLL.Services
 {
@@ -23,13 +24,13 @@ namespace SightSeeing.BLL.Services
             var place = await _placeService.GetPlaceByIdAsync(reviewDto.PlaceId);
             if (place == null)
             {
-                throw new InvalidOperationException($"Місце з Id {reviewDto.PlaceId} не існує.");
+                throw new BusinessException($"Місце з Id {reviewDto.PlaceId} не існує.");
             }
             
             var user = await _userService.GetUserByIdAsync(reviewDto.UserId);
             if (user == null)
             {
-                throw new InvalidOperationException($"Користувач з Id {reviewDto.UserId} не існує.");
+                throw new BusinessException($"Користувач з Id {reviewDto.UserId} не існує.");
             }
 
             var review = new Review
@@ -62,7 +63,7 @@ namespace SightSeeing.BLL.Services
             var review = await _unitOfWork.Reviews.GetByIdAsync(id);
             if (review == null)
             {
-                throw new InvalidOperationException($"Відгук з Id {id} не знайдено.");
+                throw new BusinessException($"Відгук з Id {id} не знайдено.");
             }
 
             return new ReviewDto
@@ -80,19 +81,19 @@ namespace SightSeeing.BLL.Services
             var existingReview = await _unitOfWork.Reviews.GetByIdAsync(reviewDto.Id);
             if (existingReview == null)
             {
-                throw new InvalidOperationException($"Відгук з Id {reviewDto.Id} не знайдено.");
+                throw new BusinessException($"Відгук з Id {reviewDto.Id} не знайдено.");
             }
 
             var place = await _placeService.GetPlaceByIdAsync(reviewDto.PlaceId);
             if (place == null)
             {
-                throw new InvalidOperationException($"Місце з Id {reviewDto.PlaceId} не існує.");
+                throw new BusinessException($"Місце з Id {reviewDto.PlaceId} не існує.");
             }
 
             var user = await _userService.GetUserByIdAsync(reviewDto.UserId);
             if (user == null)
             {
-                throw new InvalidOperationException($"Користувач з Id {reviewDto.UserId} не існує.");
+                throw new BusinessException($"Користувач з Id {reviewDto.UserId} не існує.");
             }
 
             existingReview.PlaceId = reviewDto.PlaceId;

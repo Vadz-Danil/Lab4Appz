@@ -8,15 +8,13 @@ namespace Sightseeing.DI
 {
     public static class DalDependencyRegistration
     {
-        public static IServiceCollection AddSightSeeingDal(this IServiceCollection services, string connectionString)
+        public static void AddSightSeeingDal(this IServiceCollection services, string connectionString)
         {
             services.AddDbContext<SightSeeingDbContext>(options =>
                 options.UseSqlite(connectionString)
                     .UseLazyLoadingProxies());
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            return services;
         }
     }
 }
