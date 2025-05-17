@@ -22,6 +22,7 @@ var app = builder.Build();
 
 app.UseRouting();
 app.MapRazorPages();
+app.MapControllers();
 
 if (app.Environment.IsDevelopment())
 {
