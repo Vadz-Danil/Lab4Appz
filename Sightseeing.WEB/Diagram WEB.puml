@@ -1,74 +1,219 @@
-@startuml WEB
-class PlacesController {
+@startuml
+
+skinparam monochrome true
+skinparam classAttributeIconSize 0
+
+package "SightSeeing.WEB.Controllers" {
+  class AnswersController {
+    -IAnswerService _answerService
+    +AnswersController(IAnswerService)
+    +GetAnswersByQuestionId(questionId: int): Task<ActionResult<IEnumerable<AnswerDto>>>
+    +CreateAnswer(questionId: int, answerDto: AnswerDto): Task<ActionResult<AnswerDto>>
+  }
+
+  class PlacesController {
     -IPlaceService _placeService
-    +PlacesController(IPlaceService placeService)
-    +Task<IActionResult> GetAll()
-    +Task<IActionResult> GetById(int id)
-    +Task<IActionResult> Create(PlaceDto placeDto)
-    +Task<IActionResult> Update(int id, PlaceDto placeDto)
-    +Task<IActionResult> Delete(int id)
-}
+    +PlacesController(IPlaceService)
+    +GetAll(): Task<IActionResult>
+    +GetById(id: int): Task<IActionResult>
+    +Create(placeDto: PlaceDto): Task<IActionResult>
+    +Update(id: int, placeDto: PlaceDto): Task<IActionResult>
+    +Delete(id: int): Task<IActionResult>
+  }
 
-class ReviewsController {
+  class QuestionsController {
+    -IQuestionService _questionService
+    +QuestionsController(IQuestionService)
+    +GetAllQuestions(): Task<ActionResult<IEnumerable<QuestionDto>>>
+    +GetQuestionById(id: int): Task<ActionResult<QuestionDto>>
+    +CreateQuestion(questionDto: QuestionDto): Task<ActionResult<QuestionDto>>
+  }
+
+  class ReviewsController {
     -IReviewService _reviewService
-    +ReviewsController(IReviewService reviewService)
-    +Task<IActionResult> GetAll()
-    +Task<IActionResult> GetById(int id)
-    +Task<IActionResult> Create(ReviewDto reviewDto)
-}
+    +ReviewsController(IReviewService)
+    +GetAll(): Task<IActionResult>
+    +GetById(id: int): Task<IActionResult>
+    +Create(reviewDto: ReviewDto): Task<IActionResult>
+  }
 
-class UsersController {
+  class UsersController {
     -IUserService _userService
-    +UsersController(IUserService userService)
-    +Task<IActionResult> Login(LoginDto loginDto)
-    +Task<IActionResult> GetById(int id)
-    +Task<IActionResult> Create(UserDto userDto)
+    +UsersController(IUserService)
+    +Login(loginDto: LoginDto): Task<IActionResult>
+    +GetById(id: int): Task<IActionResult>
+    +Create(userDto: UserDto): Task<IActionResult>
+  }
 }
 
-class CreateModel {
-    -IPlaceService _placeService
-    +CreateModel(IPlaceService placeService)
-    +void OnGet()
-    +Task<IActionResult> OnPostAsync()
+package "SightSeeing.WEB.Pages" {
+  package "AdditionalInfos" {
+    class CreateModel {
+      -IUnitOfWork _unitOfWork
+      +AdditionalInfo? AdditionalInfo
+      +CreateModel(IUnitOfWork)
+      +OnGet(placeId: int): IActionResult
+      +OnPostAsync(): Task<IActionResult>
+    }
+  }
+
+  package "Places" {
+    class CreateModel {
+      -IPlaceService _placeService
+      +PlaceDto Place
+      +CreateModel(IPlaceService)
+      +OnGet(): void
+      +OnPostAsync(): Task<IActionResult>
+    }
+
+    class DeleteModel {
+      -IPlaceService _placeService
+      +PlaceDto Place
+      +DeleteModel(IPlaceService)
+      +OnGetAsync(id: int): Task<IActionResult>
+      +OnPostAsync(): Task<IActionResult>
+    }
+
+    class DetailsModel {
+      -IPlaceService _placeService
+      -IReviewService _reviewService
+      -IUnitOfWork _unitOfWork
+      +PlaceDto Place
+      +IEnumerable<ReviewDto> Reviews
+      +IEnumerable<Question?> Questions
+      +IEnumerable<AdditionalInfo?> AdditionalInfos
+      +DetailsModel(IPlaceService, IReviewService, IUnitOfWork)
+      +OnGetAsync(id: int): Task<IActionResult>
+    }
+
+    class EditModel {
+      -IPlaceService _placeService
+      +PlaceDto Place
+      +EditModel(IPlaceService)
+      +OnGetAsync(id: int): Task<IActionResult>
+      +OnPostAsync(): Task<IActionResult>
+    }
+
+    class IndexModel {
+      -IPlaceService _placeService
+      +IEnumerable<PlaceDto> Places
+      +IndexModel(IPlaceService)
+      +OnGetAsync(): Task
+    }
+  }
+
+  package "Questions" {
+    class AnswerModel {
+      -IAnswerService _answerService
+      -IQuestionService _questionService
+      -IPlaceService _placeService
+      -IUserService _userService
+      +AnswerDto Answer
+      +QuestionDto Question
+      +string PlaceName
+      +AnswerModel(IAnswerService, IQuestionService, IPlaceService, IUserService)
+      +OnGetAsync(questionId: int): Task<IActionResult>
+      +OnPostAsync(): Task<IActionResult>
+    }
+
+    class CreateModel {
+      -IQuestionService _questionService
+      -IPlaceService _placeService
+      -IUserService _userService
+      +QuestionDto Question
+      +PlaceDto Place
+      +string ErrorMessage
+      +CreateModel(IQuestionService, IPlaceService, IUserService)
+      +OnGetAsync(placeId: int): Task<IActionResult>
+      +OnPostAsync(): Task<IActionResult>
+    }
+
+    class IndexModel {
+      -IQuestionService _questionService
+      -IAnswerService _answerService
+      -IPlaceService _placeService
+      +IList<QuestionDto> Questions
+      +IDictionary<int, IList<AnswerDto>> AnswersByQuestionId
+      +IDictionary<int, string> PlaceNames
+      +IndexModel(IQuestionService, IAnswerService, IPlaceService)
+      +OnGetAsync(): Task
+    }
+  }
+
+  package "Reviews" {
+    class CreateModel {
+      -IReviewService _reviewService
+      -IPlaceService _placeService
+      -IUserService _userService
+      +ReviewDto Review
+      +PlaceDto Place
+      +CreateModel(IReviewService, IPlaceService, IUserService)
+      +OnGetAsync(placeId: int): Task<IActionResult>
+      +OnPostAsync(): Task<IActionResult>
+    }
+
+    class IndexModel {
+      -IReviewService _reviewService
+      -IPlaceService _placeService
+      +IList<ReviewDto> Reviews
+      +Dictionary<int, string> PlaceNames
+      +IndexModel(IReviewService, IPlaceService)
+      +OnGetAsync(): Task
+    }
+  }
+
+  class IndexModel {
+    +OnGet(): void
+    +OnPostLogoutAsync(): Task<IActionResult>
+  }
+
+  class LoginModel {
+    -IUserService _userService
+    +string Username
+    +string Password
+    +LoginModel(IUserService)
+    +OnPostAsync(): Task<IActionResult>
+  }
+
+  class RegisterModel {
+    -IUserService _userService
+    +UserDto User
+    +RegisterModel(IUserService)
+    +OnGet(): void
+    +OnPostAsync(): Task<IActionResult>
+  }
 }
 
-class DeleteModel {
-    -IPlaceService _placeService
-    +DeleteModel(IPlaceService placeService)
-    +Task<IActionResult> OnGetAsync(int id)
-    +Task<IActionResult> OnPostAsync()
-}
+' Dependencies
+AnswersController --> IAnswerService
+PlacesController --> IPlaceService
+QuestionsController --> IQuestionService
+ReviewsController --> IReviewService
+UsersController --> IUserService
+AdditionalInfos.CreateModel --> IUnitOfWork
+Places.CreateModel --> IPlaceService
+Places.DeleteModel --> IPlaceService
+Places.DetailsModel --> IPlaceService
+Places.DetailsModel --> IReviewService
+Places.DetailsModel --> IUnitOfWork
+Places.EditModel --> IPlaceService
+Places.IndexModel --> IPlaceService
+Questions.AnswerModel --> IAnswerService
+Questions.AnswerModel --> IQuestionService
+Questions.AnswerModel --> IPlaceService
+Questions.AnswerModel --> IUserService
+Questions.CreateModel --> IQuestionService
+Questions.CreateModel --> IPlaceService
+Questions.CreateModel --> IUserService
+Questions.IndexModel --> IQuestionService
+Questions.IndexModel --> IAnswerService
+Questions.IndexModel --> IPlaceService
+Reviews.CreateModel --> IReviewService
+Reviews.CreateModel --> IPlaceService
+Reviews.CreateModel --> IUserService
+Reviews.IndexModel --> IReviewService
+Reviews.IndexModel --> IPlaceService
+LoginModel --> IUserService
+RegisterModel --> IUserService
 
-class DetailsModel {
-    -IPlaceService _placeService
-    -IReviewService _reviewService
-    -IUnitOfWork _unitOfWork
-    +DetailsModel(IPlaceService placeService, IReviewService reviewService, IUnitOfWork unitOfWork)
-    +Task<IActionResult> OnGetAsync(int id)
-}
-
-class EditModel {
-    -IPlaceService _placeService
-    +EditModel(IPlaceService placeService)
-    +Task<IActionResult> OnGetAsync(int id)
-    +Task<IActionResult> OnPostAsync()
-}
-
-class IndexModel {
-    -IPlaceService _placeService
-    +IndexModel(IPlaceService placeService)
-    +Task OnGetAsync()
-}
-
-PlacesController --> IPlaceService : uses
-ReviewsController --> IReviewService : uses
-UsersController --> IUserService : uses
-
-CreateModel --> IPlaceService : uses
-DeleteModel --> IPlaceService : uses
-DetailsModel --> IPlaceService : uses
-DetailsModel --> IReviewService : uses
-DetailsModel --> IUnitOfWork : uses
-EditModel --> IPlaceService : uses
-IndexModel --> IPlaceService : uses
 @enduml

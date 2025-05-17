@@ -1,113 +1,126 @@
-@startuml Entities
-class User {
-    +int Id
-    +string Name
-    +string Role
-    +string Password
-    +ICollection<Review> Reviews
-    +ICollection<Question> Questions
-    +ICollection<Answer> Answers
+@startuml
+
+skinparam monochrome true
+skinparam classAttributeIconSize 0
+
+package "SightSeeing.Entities" {
+  package "DTO" {
+    class AnswerDto {
+      +int Id
+      +int QuestionId
+      +int UserId
+      +string Text
+    }
+
+    class LoginDto {
+      +string Username
+      +string Password
+    }
+
+    class PlaceDto {
+      +int Id
+      +string Name
+      +string Description
+      +string Type
+    }
+
+    class QuestionDto {
+      +int Id
+      +string Text
+      +int UserId
+      +int PlaceId
+    }
+
+    class ReviewDto {
+      +int Id
+      +string Text
+      +int Rating
+      +int UserId
+      +int PlaceId
+    }
+
+    class UserDto {
+      +int Id
+      +string Name
+      +string Role
+      +string Password
+    }
+  }
+
+  package "Entities" {
+    class AdditionalInfo {
+      +int Id
+      +string Type
+      +string Path
+      +int PlaceId
+      +Place? Place
+    }
+
+    class Answer {
+      +int Id
+      +string Text
+      +int UserId
+      +User User
+      +int QuestionId
+      +Question Question
+    }
+
+    class Place {
+      +int Id
+      +string Name
+      +string Description
+      +string Type
+      +ICollection<Review> Reviews
+      +ICollection<Question> Questions
+      +ICollection<AdditionalInfo> AdditionalInfos
+    }
+
+    class Question {
+      +int Id
+      +string Text
+      +int UserId
+      +User User
+      +int PlaceId
+      +Place Place
+      +ICollection<Answer> Answers
+    }
+
+    class Review {
+      +int Id
+      +string Text
+      +int Rating
+      +int UserId
+      +User User
+      +int PlaceId
+      +Place Place
+    }
+
+    class User {
+      +int Id
+      +string Name
+      +string Role
+      +string Password
+      +ICollection<Review> Reviews
+      +ICollection<Question> Questions
+      +ICollection<Answer> Answers
+    }
+  }
 }
 
-class Place {
-    +int Id
-    +string Name
-    +string Description
-    +string Type
-    +ICollection<Review> Reviews
-    +ICollection<Question> Questions
-    +ICollection<AdditionalInfo> AdditionalInfos
-}
+' Relationships
+AdditionalInfo --> Place
+Answer --> User
+Answer --> Question
+Place --> Review
+Place --> Question
+Place --> AdditionalInfo
+Question --> User
+Question --> Place
+Question --> Answer
+Review --> User
+Review --> Place
+User --> Review
+User --> Question
+User --> Answer
 
-class Review {
-    +int Id
-    +string Text
-    +int Rating
-    +int UserId
-    +int PlaceId
-    +User User
-    +Place Place
-}
-
-class Question {
-    +int Id
-    +string Text
-    +int UserId
-    +int PlaceId
-    +User User
-    +Place Place
-    +ICollection<Answer> Answers
-}
-
-class Answer {
-    +int Id
-    +string Text
-    +int UserId
-    +int QuestionId
-    +User User
-    +Question Question
-}
-
-class AdditionalInfo {
-    +int Id
-    +string Type
-    +string Path
-    +int PlaceId
-    +Place Place
-}
-
-class UserDto {
-    +int Id
-    +string Name
-    +string Role
-    +string Password
-}
-
-class PlaceDto {
-    +int Id
-    +string Name
-    +string Description
-    +string Type
-}
-
-class ReviewDto {
-    +int Id
-    +string Text
-    +int Rating
-    +int UserId
-    +int PlaceId
-}
-
-class QuestionDto {
-    +int Id
-    +string Text
-    +int UserId
-    +int PlaceId
-}
-
-class AnswerDto {
-    +int Id
-    +string Text
-    +int UserId
-    +int QuestionId
-}
-
-class LoginDto {
-    +string Username
-    +string Password
-}
-
-User "1" -- "*" Review : has
-User "1" -- "*" Question : has
-User "1" -- "*" Answer : has
-Place "1" -- "*" Review : has
-Place "1" -- "*" Question : has
-Place "1" -- "*" AdditionalInfo : has
-Question "1" -- "*" Answer : has
-
-UserDto .. User : maps to
-PlaceDto .. Place : maps to
-ReviewDto .. Review : maps to
-QuestionDto .. Question : maps to
-AnswerDto .. Answer : maps to
 @enduml

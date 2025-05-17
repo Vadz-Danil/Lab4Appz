@@ -1,110 +1,103 @@
-@startuml Tests
+@startuml
 
-class TestBase {
+skinparam monochrome true
+skinparam classAttributeIconSize 0
+
+package "SightSeeing.Tests" {
+  class TestBase {
     #IKernel Kernel
     #Fixture Fixture
-    +void SetUp()
-    +void TearDown()
-}
+    +SetUp(): void
+    +TearDown(): void
+  }
 
-class AnswerServiceTests {
+  class AnswerServiceTests {
     -AnswerService _answerService
-    +void SetUp()
-    +Task AddAnswerAsync_ValidAnswer_AddsAnswer()
-    +Task AddAnswerAsync_NonExistingQuestion_ThrowsBusinessException()
-    +Task AddAnswerAsync_NonExistingUser_ThrowsBusinessException()
-    +Task AddAnswerAsync_InvalidText_ThrowsValidationException()
-    +Task GetAnswersByQuestionIdAsync_ExistingQuestionId_ReturnsAnswers()
-    +Task GetAnswersByQuestionIdAsync_NonExistingQuestionId_ReturnsEmptyList()
-}
+    +SetUp(): void
+    +AddAnswerAsync_ValidAnswer_AddsAnswer(): Task
+    +AddAnswerAsync_NonExistingQuestion_ThrowsBusinessException(): Task
+    +AddAnswerAsync_NonExistingUser_ThrowsBusinessException(): Task
+    +AddAnswerAsync_InvalidText_ThrowsValidationException(): Task
+    +GetAnswersByQuestionIdAsync_ExistingQuestionId_ReturnsAnswers(): Task
+    +GetAnswersByQuestionIdAsync_NonExistingQuestionId_ReturnsEmptyList(): Task
+  }
 
-class PlaceServiceTests {
+  class PlaceServiceTests {
     -PlaceService _placeService
-    +void SetUp()
-    +Task GetPlaceByIdAsync_ExistingId_ReturnsPlaceDto()
-    +Task GetPlaceByIdAsync_NonExistingId_ThrowsBusinessException()
-    +Task GetAllPlacesAsync_ReturnsAllPlaces()
-    +Task AddPlaceAsync_ValidPlace_AddsPlace()
-    +Task UpdatePlaceAsync_ValidPlace_UpdatesPlace()
-    +Task UpdatePlaceAsync_NonExistingPlace_ThrowsBusinessException()
-    +Task DeletePlaceAsync_ValidId_DeletesPlace()
-    +Task DeletePlaceAsync_NonExistingId_ThrowsBusinessException()
-}
+    +SetUp(): void
+    +GetPlaceByIdAsync_ExistingId_ReturnsPlaceDto(): Task
+    +GetPlaceByIdAsync_NonExistingId_ThrowsBusinessException(): Task
+    +GetAllPlacesAsync_ReturnsAllPlaces(): Task
+    +AddPlaceAsync_ValidPlace_AddsPlace(): Task
+    +UpdatePlaceAsync_ValidPlace_UpdatesPlace(): Task
+    +UpdatePlaceAsync_NonExistingPlace_ThrowsBusinessException(): Task
+    +DeletePlaceAsync_ValidId_DeletesPlace(): Task
+    +DeletePlaceAsync_NonExistingId_ThrowsBusinessException(): Task
+  }
 
-class QuestionServiceTests {
+  class QuestionServiceTests {
     -QuestionService _questionService
-    +void SetUp()
-    +Task AddQuestionAsync_ValidQuestion_AddsQuestion()
-    +Task AddQuestionAsync_InvalidText_ThrowsValidationException()
-    +Task AddQuestionAsync_NonExistingPlace_ThrowsBusinessException()
-    +Task AddQuestionAsync_NonExistingUser_ThrowsBusinessException()
-    +Task GetQuestionByIdAsync_ExistingId_ReturnsQuestionDto()
-    +Task GetQuestionByIdAsync_NonExistingId_ThrowsBusinessException()
-    +Task GetAllQuestionsAsync_ReturnsAllQuestions()
-}
+    +SetUp(): void
+    +AddQuestionAsync_ValidQuestion_AddsQuestion(): Task
+    +AddQuestionAsync_InvalidText_ThrowsValidationException(): Task
+    +AddQuestionAsync_NonExistingPlace_ThrowsBusinessException(): Task
+    +AddQuestionAsync_NonExistingUser_ThrowsBusinessException(): Task
+    +GetQuestionByIdAsync_ExistingId_ReturnsQuestionDto(): Task
+    +GetQuestionByIdAsync_NonExistingId_ThrowsBusinessException(): Task
+    +GetAllQuestionsAsync_ReturnsAllQuestions(): Task
+  }
 
-class ReviewServiceTests {
+  class ReviewServiceTests {
     -ReviewService _reviewService
-    +void SetUp()
-    +Task AddReviewAsync_ValidReview_AddsReview()
-    +Task AddReviewAsync_NonExistingPlace_ThrowsInvalidOperationException()
-    +Task AddReviewAsync_NonExistingUser_ThrowsInvalidOperationException()
-    +Task GetReviewByIdAsync_ExistingId_ReturnsReviewDto()
-    +Task GetReviewByIdAsync_NonExistingId_ThrowsInvalidOperationException()
-    +Task GetAllReviewsAsync_ReturnsAllReviews()
-    +Task UpdateReviewAsync_ValidReview_UpdatesReview()
-    +Task UpdateReviewAsync_NonExistingReview_ThrowsInvalidOperationException()
-    +Task UpdateReviewAsync_NonExistingPlace_ThrowsInvalidOperationException()
-    +Task UpdateReviewAsync_NonExistingUser_ThrowsInvalidOperationException()
-}
+    +SetUp(): void
+    +AddReviewAsync_ValidReview_AddsReview(): Task
+    +AddReviewAsync_NonExistingPlace_ThrowsBusinessException(): Task
+    +AddReviewAsync_NonExistingUser_ThrowsBusinessException(): Task
+    +GetReviewByIdAsync_ExistingId_ReturnsReviewDto(): Task
+    +GetReviewByIdAsync_NonExistingId_ThrowsBusinessException(): Task
+    +GetAllReviewsAsync_ReturnsAllReviews(): Task
+  }
 
-class UserServiceTests {
+  class UserServiceTests {
     -UserService _userService
-    +void SetUp()
-    +Task AuthenticateAsync_ValidCredentials_ReturnsUserDto()
-    +Task AuthenticateAsync_InvalidCredentials_ReturnsNull()
-    +Task AuthenticateAsync_NonExistingUser_ReturnsNull()
-    +Task GetUserByIdAsync_ExistingId_ReturnsUserDto()
-    +Task GetUserByIdAsync_NonExistingId_ThrowsBusinessException()
-    +Task AddUserAsync_ValidUser_AddsUser()
-    +Task AddUserAsync_EmptyName_ThrowsValidationException()
-    +Task AddUserAsync_EmptyPassword_ThrowsValidationException()
-    +Task AddUserAsync_InvalidNameCharacters_ThrowsValidationException()
+    +SetUp(): void
+    +AuthenticateAsync_ValidCredentials_ReturnsUserDto(): Task
+    +AuthenticateAsync_InvalidCredentials_ReturnsNull(): Task
+    +AuthenticateAsync_NonExistingUser_ReturnsNull(): Task
+    +GetUserByIdAsync_ExistingId_ReturnsUserDto(): Task
+    +GetUserByIdAsync_NonExistingId_ThrowsBusinessException(): Task
+    +AddUserAsync_ValidUser_AddsUser(): Task
+    +AddUserAsync_EmptyName_ThrowsValidationException(): Task
+    +AddUserAsync_EmptyPassword_ThrowsValidationException(): Task
+    +AddUserAsync_InvalidNameCharacters_ThrowsValidationException(): Task
+  }
 }
 
-TestBase <|-- AnswerServiceTests
-TestBase <|-- PlaceServiceTests
-TestBase <|-- QuestionServiceTests
-TestBase <|-- ReviewServiceTests
-TestBase <|-- UserServiceTests
+' Inheritance
+AnswerServiceTests -|> TestBase
+PlaceServiceTests -|> TestBase
+QuestionServiceTests -|> TestBase
+ReviewServiceTests -|> TestBase
+UserServiceTests -|> TestBase
 
-AnswerServiceTests --> AnswerService : tests
-PlaceServiceTests --> PlaceService : tests
-QuestionServiceTests --> QuestionService : tests
-ReviewServiceTests --> ReviewService : tests
-UserServiceTests --> UserService : tests
-
-AnswerServiceTests --> IUnitOfWork : mocks
-AnswerServiceTests --> IQuestionService : mocks
-AnswerServiceTests --> IUserService : mocks
-
-PlaceServiceTests --> IUnitOfWork : mocks
-PlaceServiceTests --> IMapper : mocks
-
-QuestionServiceTests --> IUnitOfWork : mocks
-QuestionServiceTests --> IPlaceService : mocks
-QuestionServiceTests --> IUserService : mocks
-
-ReviewServiceTests --> IUnitOfWork : mocks
-ReviewServiceTests --> IPlaceService : mocks
-ReviewServiceTests --> IUserService : mocks
-
-UserServiceTests --> IUnitOfWork : mocks
-UserServiceTests --> IMapper : mocks
-
-note right of TestBase
-  Базовий клас для тестів, налаштовує
-  AutoFixture та Ninject для створення моків
-end note
+' Dependencies
+AnswerServiceTests --> AnswerService
+AnswerServiceTests --> IUnitOfWork
+AnswerServiceTests --> IQuestionService
+AnswerServiceTests --> IUserService
+PlaceServiceTests --> PlaceService
+PlaceServiceTests --> IUnitOfWork
+PlaceServiceTests --> IMapper
+QuestionServiceTests --> QuestionService
+QuestionServiceTests --> IUnitOfWork
+QuestionServiceTests --> IPlaceService
+QuestionServiceTests --> IUserService
+ReviewServiceTests --> ReviewService
+ReviewServiceTests --> IUnitOfWork
+ReviewServiceTests --> IPlaceService
+ReviewServiceTests --> IUserService
+UserServiceTests --> UserService
+UserServiceTests --> IUnitOfWork
+UserServiceTests --> IMapper
 
 @enduml

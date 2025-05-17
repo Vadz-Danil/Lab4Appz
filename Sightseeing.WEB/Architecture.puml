@@ -1,75 +1,130 @@
 @startuml
-skinparam monochrome true
 
-package "WEB" {
-    [PlacesController]
-    [ReviewsController]
-    [UsersController]
-    [Razor Pages]
-    note right: "Контролери API та Razor Pages\nвикликають сервіси BLL"
+skinparam componentStyle uml2
+
+' Визначення компонентів
+package "Presentation Layer" {
+  [AnswersController]
+  [PlacesController]
+  [QuestionsController]
+  [ReviewsController]
+  [UsersController]
+  [Razor Pages]
 }
 
-package "BLL" {
-    [AnswerService]
-    [PlaceService]
-    [QuestionService]
-    [ReviewService]
-    [UserService]
-    [MappingProfile]
-    note right: "Сервіси бізнес-логіки\nзвертаються до DAL через UnitOfWork"
+package "Business Logic Layer" {
+  [IAnswerService]
+  [IPlaceService]
+  [IQuestionService]
+  [IReviewService]
+  [IUserService]
+  [AnswerService]
+  [PlaceService]
+  [QuestionService]
+  [ReviewService]
+  [UserService]
+  [BusinessException]
+  [ValidationException]
+  [PasswordHash]
+  [ValidationHelper]
 }
 
-package "DAL" {
-    [SightSeeingDbContext]
-    [Repository<T>]
-    [UnitOfWork]
-    note right: "Репозиторії та контекст БД\nпрацюють із сутностями"
+package "Data Access Layer" {
+  [SightSeeingDbContext]
+  [IRepository<T>]
+  [Repository<T>]
+  [IUnitOfWork]
+  [UnitOfWork]
 }
 
-package "Entities" {
-    [Answer]
-    [Place]
-    [Question]
-    [Review]
-    [User]
-    [AdditionalInfo]
-    [AnswerDto]
-    [PlaceDto]
-    [QuestionDto]
-    [ReviewDto]
-    [UserDto]
-    note right: "Сутності БД та DTO\nдля передачі даних"
-}
-
-package "Abstraction" {
-    [IRepository<T>]
-    [IUnitOfWork]
-    note right: "Інтерфейси для репозиторіїв\nта Unit of Work"
-}
-
-package "DI" {
-    [ServiceModule]
-    [BllDependencyRegistration]
-    [DalDependencyRegistration]
-    note right: "Налаштування ін’єкції залежностей\nдля сервісів і репозиторіїв"
+package "Models Layer" {
+  [AnswerDto]
+  [LoginDto]
+  [PlaceDto]
+  [QuestionDto]
+  [ReviewDto]
+  [UserDto]
+  [AdditionalInfo]
+  [Answer]
+  [Place]
+  [Question]
+  [Review]
+  [User]
 }
 
 package "Tests" {
-    [AnswerServiceTests]
-    [PlaceServiceTests]
-    [QuestionServiceTests]
-    [ReviewServiceTests]
-    [UserServiceTests]
-    note right: "Юніт-тести для перевірки\nбізнес-логіки"
+  [AnswerServiceTests]
+  [PlaceServiceTests]
+  [QuestionServiceTests]
+  [ReviewServiceTests]
+  [UserServiceTests]
 }
 
-"WEB" --> "BLL" : "використовує"
-"BLL" --> "DAL" : "використовує"
-"DAL" --> "Entities" : "використовує"
-"BLL" ..> "Abstraction" : "реалізує"
-"DAL" ..> "Abstraction" : "реалізує"
-"DI" --> "BLL" : "налаштовує"
-"DI" --> "DAL" : "налаштовує"
-"Tests" --> "BLL" : "тестує"
+package "Dependency Injection" {
+  [ServiceModule]
+  [DalDependencyRegistration]
+  [BllDependencyRegistration]
+}
+
+' Визначення зв'язків
+[AnswersController] --> [IAnswerService]
+[PlacesController] --> [IPlaceService]
+[QuestionsController] --> [IQuestionService]
+[ReviewsController] --> [IReviewService]
+[UsersController] --> [IUserService]
+[Razor Pages] --> [IAnswerService]
+[Razor Pages] --> [IPlaceService]
+[Razor Pages] --> [IQuestionService]
+[Razor Pages] --> [IReviewService]
+[Razor Pages] --> [IUserService]
+
+[IAnswerService] <-- [AnswerService]
+[IPlaceService] <-- [PlaceService]
+[IQuestionService] <-- [QuestionService]
+[IReviewService] <-- [ReviewService]
+[IUserService] <-- [UserService]
+
+[AnswerService] --> [IUnitOfWork]
+[PlaceService] --> [IUnitOfWork]
+[QuestionService] --> [IUnitOfWork]
+[ReviewService] --> [IUnitOfWork]
+[UserService] --> [IUnitOfWork]
+
+[IUnitOfWork] <-- [UnitOfWork]
+[UnitOfWork] --> [IRepository<T>]
+[IRepository<T>] <-- [Repository<T>]
+[Repository<T>] --> [SightSeeingDbContext]
+
+[SightSeeingDbContext] --> [Models Layer]
+
+' Зв'язки для тестів
+[AnswerServiceTests] --> [AnswerService]
+[PlaceServiceTests] --> [PlaceService]
+[QuestionServiceTests] --> [QuestionService]
+[ReviewServiceTests] --> [ReviewService]
+[UserServiceTests] --> [UserService]
+
+' Зв'язки для DI
+[ServiceModule] --> [IUnitOfWork]
+[ServiceModule] --> [IUserService]
+[ServiceModule] --> [IPlaceService]
+[ServiceModule] --> [IReviewService]
+[ServiceModule] --> [IQuestionService]
+[ServiceModule] --> [IAnswerService]
+
+[DalDependencyRegistration] --> [SightSeeingDbContext]
+[DalDependencyRegistration] --> [IUnitOfWork]
+
+[BllDependencyRegistration] --> [IUserService]
+[BllDependencyRegistration] --> [IPlaceService]
+[BllDependencyRegistration] --> [IReviewService]
+[BllDependencyRegistration] --> [IQuestionService]
+[BllDependencyRegistration] --> [IAnswerService]
+
+' Зв'язки з моделями
+[Presentation Layer] --> [Models Layer]
+[Business Logic Layer] --> [Models Layer]
+[Data Access Layer] --> [Models Layer]
+[Tests] --> [Models Layer]
 
 @enduml

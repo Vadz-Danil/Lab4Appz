@@ -1,73 +1,74 @@
-@startuml DAL
+@startuml
 
-class SightSeeingDbContext {
-    +DbSet<User> Users
-    +DbSet<Place> Places
-    +DbSet<Review> Reviews
-    +DbSet<Question> Questions
-    +DbSet<Answer> Answers
-    +DbSet<AdditionalInfo> AdditionalInfos
+skinparam monochrome true
+skinparam classAttributeIconSize 0
+
+package "SightSeeing.DAL" {
+  package "DbContext" {
+    class SightSeeingDbContext {
+      +DbSet<User> Users
+      +DbSet<Place> Places
+      +DbSet<Review> Reviews
+      +DbSet<Question> Questions
+      +DbSet<Answer> Answers
+      +DbSet<AdditionalInfo> AdditionalInfos
+      +SightSeeingDbContext(options: DbContextOptions<SightSeeingDbContext>)
+      #OnConfiguring(optionsBuilder: DbContextOptionsBuilder): void
+      #OnModelCreating(modelBuilder: ModelBuilder): void
+    }
+
+    class SightSeeingDbContextFactory {
+      +CreateDbContext(args: string[]): SightSeeingDbContext
+    }
+  }
+
+  package "Repositories" {
+    class Repository<T> {
+      -DbSet<T> _dbSet
+      +Repository(context: SightSeeingDbContext)
+      +GetByIdAsync(id: int, eager: bool): Task<T?>
+      +GetAllAsync(eager: bool): Task<IEnumerable<T?>>
+      +AddAsync(entity: T?): Task
+      +UpdateAsync(entity: T?): Task
+      +DeleteAsync(id: int): Task
+    }
+  }
+
+  package "UnitOfWork" {
+    class UnitOfWork {
+      -SightSeeingDbContext _context
+      -IRepository<User> _users
+      -IRepository<Place> _places
+      -IRepository<Review> _reviews
+      -IRepository<Question> _questions
+      -IRepository<Answer> _answers
+      -IRepository<AdditionalInfo> _additionalInfos
+      +UnitOfWork(context: SightSeeingDbContext)
+      +IRepository<User> Users
+      +IRepository<Place> Places
+      +IRepository<Review> Reviews
+      +IRepository<Question> Questions
+      +IRepository<Answer> Answers
+      +IRepository<AdditionalInfo> AdditionalInfos
+      +SaveChangesAsync(): Task<int>
+      +Dispose(): void
+    }
+  }
 }
 
-interface IRepository {
-    +GetByIdAsync(id: int, eager: bool): T
-    +GetAllAsync(eager: bool): IEnumerable<T>
-    +AddAsync(entity: T)
-    +UpdateAsync(entity: T)
-    +DeleteAsync(id: int)
-}
+' Dependencies
+Repository .|> IRepository
+UnitOfWork .|> IUnitOfWork
 
-class Repository {
-    -_dbSet: DbSet<T>
-    +Repository(context: SightSeeingDbContext)
-    +GetByIdAsync(id: int, eager: bool): T
-    +GetAllAsync(eager: bool): IEnumerable<T>
-    +AddAsync(entity: T)
-    +UpdateAsync(entity: T)
-    +DeleteAsync(id: int)
-}
+Repository --> SightSeeingDbContext
+UnitOfWork --> SightSeeingDbContext
+UnitOfWork --> IRepository
 
-interface IUnitOfWork {
-    +Users: IRepository<User>
-    +Places: IRepository<Place>
-    +Reviews: IRepository<Review>
-    +Questions: IRepository<Question>
-    +Answers: IRepository<Answer>
-    +AdditionalInfos: IRepository<AdditionalInfo>
-    +SaveChangesAsync(): int
-}
-
-class UnitOfWork {
-    -_context: SightSeeingDbContext
-    -_users: IRepository<User>
-    -_places: IRepository<Place>
-    -_reviews: IRepository<Review>
-    -_questions: IRepository<Question>
-    -_answers: IRepository<Answer>
-    -_additionalInfos: IRepository<AdditionalInfo>
-    +UnitOfWork(context: SightSeeingDbContext)
-    +Users: IRepository<User>
-    +Places: IRepository<Place>
-    +Reviews: IRepository<Review>
-    +Questions: IRepository<Question>
-    +Answers: IRepository<Answer>
-    +AdditionalInfos: IRepository<AdditionalInfo>
-    +SaveChangesAsync(): int
-}
-
-Repository ..|> IRepository
-UnitOfWork ..|> IUnitOfWork
-UnitOfWork --> SightSeeingDbContext : uses
-Repository --> SightSeeingDbContext : uses
-
-note right of IRepository
-  Узагальнений інтерфейс для CRUD-операцій
-  з сутностями
-end note
-
-note right of UnitOfWork
-  Координує роботу кількох репозиторіїв
-  та збереження змін у базі даних
-end note
+SightSeeingDbContext --> User
+SightSeeingDbContext --> Place
+SightSeeingDbContext --> Review
+SightSeeingDbContext --> Question
+SightSeeingDbContext --> Answer
+SightSeeingDbContext --> AdditionalInfo
 
 @enduml

@@ -1,47 +1,38 @@
-@startuml DI
+@startuml
 
-class ServiceModule {
-    +void Load()
+skinparam monochrome true
+skinparam classAttributeIconSize 0
+
+package "Sightseeing.DI" {
+  class BllDependencyRegistration {
+    +AddSightSeeingBll(services: IServiceCollection): void
+  }
+
+  class DalDependencyRegistration {
+    +AddSightSeeingDal(services: IServiceCollection, connectionString: string): void
+  }
+
+  class ServiceModule {
+    +Load(): void
+  }
 }
 
-class BllDependencyRegistration {
-    +void AddSightSeeingBll(IServiceCollection services)
-}
+' Dependencies
+BllDependencyRegistration --> IUserService
+BllDependencyRegistration --> IPlaceService
+BllDependencyRegistration --> IReviewService
+BllDependencyRegistration --> IQuestionService
+BllDependencyRegistration --> IAnswerService
+BllDependencyRegistration --> MappingProfile
 
-class DalDependencyRegistration {
-    +void AddSightSeeingDal(IServiceCollection services, string connectionString)
-}
+DalDependencyRegistration --> SightSeeingDbContext
+DalDependencyRegistration --> IUnitOfWork
 
-ServiceModule --> IUnitOfWork : binds
-ServiceModule --> IUserService : binds
-ServiceModule --> IPlaceService : binds
-ServiceModule --> IReviewService : binds
-ServiceModule --> IQuestionService : binds
-ServiceModule --> IAnswerService : binds
-
-BllDependencyRegistration --> IUserService : registers
-BllDependencyRegistration --> IPlaceService : registers
-BllDependencyRegistration --> IReviewService : registers
-BllDependencyRegistration --> IQuestionService : registers
-BllDependencyRegistration --> IAnswerService : registers
-BllDependencyRegistration --> IMapper : registers
-
-DalDependencyRegistration --> IUnitOfWork : registers
-DalDependencyRegistration --> SightSeeingDbContext : registers
-
-note right of ServiceModule
-  Ninject-модуль для прив’язки
-  інтерфейсів до реалізацій
-end note
-
-note right of BllDependencyRegistration
-  Реєстрація сервісів BLL
-  в ASP.NET Core DI
-end note
-
-note right of DalDependencyRegistration
-  Реєстрація компонентів DAL
-  в ASP.NET Core DI
-end note
+ServiceModule --> IUnitOfWork
+ServiceModule --> IUserService
+ServiceModule --> IPlaceService
+ServiceModule --> IReviewService
+ServiceModule --> IQuestionService
+ServiceModule --> IAnswerService
 
 @enduml

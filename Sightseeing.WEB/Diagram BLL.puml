@@ -1,123 +1,166 @@
-@startuml BLL
-interface IAnswerService {
-    +Task AddAnswerAsync(AnswerDto answerDto)
-    +Task<IList<AnswerDto>> GetAnswersByQuestionIdAsync(int questionId)
+@startuml
+
+skinparam monochrome true
+skinparam classAttributeIconSize 0
+
+package "SightSeeing.BLL" {
+  package "Interfaces" {
+    interface IAnswerService {
+      +AddAnswerAsync(answerDto: AnswerDto): Task
+      +GetAnswersByQuestionIdAsync(questionId: int): Task<IList<AnswerDto>>
+    }
+
+    interface IPlaceService {
+      +GetPlaceByIdAsync(id: int): Task<PlaceDto>
+      +GetAllPlacesAsync(): Task<IEnumerable<PlaceDto>>
+      +AddPlaceAsync(placeDto: PlaceDto): Task
+      +UpdatePlaceAsync(placeDto: PlaceDto): Task
+      +DeletePlaceAsync(id: int): Task
+    }
+
+    interface IQuestionService {
+      +GetQuestionByIdAsync(id: int): Task<QuestionDto>
+      +GetAllQuestionsAsync(): Task<IEnumerable<QuestionDto>>
+      +AddQuestionAsync(questionDto: QuestionDto): Task
+    }
+
+    interface IReviewService {
+      +GetReviewByIdAsync(id: int): Task<ReviewDto>
+      +GetAllReviewsAsync(): Task<IEnumerable<ReviewDto>>
+      +AddReviewAsync(reviewDto: ReviewDto): Task
+    }
+
+    interface IUserService {
+      +AuthenticateAsync(username: string, password: string): Task<UserDto>
+      +GetUserByIdAsync(id: int): Task<UserDto>
+      +AddUserAsync(userDto: UserDto): Task
+    }
+  }
+
+  package "Services" {
+    class AnswerService {
+      -IUnitOfWork _unitOfWork
+      -IQuestionService _questionService
+      -IUserService _userService
+      +AnswerService(IUnitOfWork, IQuestionService, IUserService)
+      +AddAnswerAsync(answerDto: AnswerDto): Task
+      +GetAnswersByQuestionIdAsync(questionId: int): Task<IList<AnswerDto>>
+    }
+
+    class PlaceService {
+      -IUnitOfWork _unitOfWork
+      -IMapper _mapper
+      +PlaceService(IUnitOfWork, IMapper)
+      +GetPlaceByIdAsync(id: int): Task<PlaceDto>
+      +GetAllPlacesAsync(): Task<IEnumerable<PlaceDto>>
+      +AddPlaceAsync(placeDto: PlaceDto): Task
+      +UpdatePlaceAsync(placeDto: PlaceDto): Task
+      +DeletePlaceAsync(id: int): Task
+    }
+
+    class QuestionService {
+      -IUnitOfWork _unitOfWork
+      -IPlaceService _placeService
+      -IUserService _userService
+      +QuestionService(IUnitOfWork, IPlaceService, IUserService)
+      +AddQuestionAsync(questionDto: QuestionDto): Task
+      +GetQuestionByIdAsync(id: int): Task<QuestionDto>
+      +GetAllQuestionsAsync(): Task<IEnumerable<QuestionDto>>
+    }
+
+    class ReviewService {
+      -IUnitOfWork _unitOfWork
+      -IPlaceService _placeService
+      -IUserService _userService
+      +ReviewService(IUnitOfWork, IPlaceService, IUserService)
+      +AddReviewAsync(reviewDto: ReviewDto): Task
+      +GetReviewByIdAsync(id: int): Task<ReviewDto>
+      +GetAllReviewsAsync(): Task<IEnumerable<ReviewDto>>
+    }
+
+    class UserService {
+      -IUnitOfWork _unitOfWork
+      -IMapper _mapper
+      +UserService(IUnitOfWork, IMapper)
+      +AuthenticateAsync(username: string, password: string): Task<UserDto>
+      +GetUserByIdAsync(id: int): Task<UserDto>
+      +AddUserAsync(userDto: UserDto): Task
+    }
+  }
+
+  package "Exceptions" {
+    class BusinessException {
+      +BusinessException(message: string)
+    }
+
+    class ValidationException {
+      +ValidationException(message: string)
+    }
+  }
+
+  package "Mapping" {
+    class MappingProfile {
+      +MappingProfile()
+    }
+  }
+
+  class PasswordHash {
+    +HashPassword(password: string): string
+    +VerifyPassword(password: string, hashedPassword: string): bool
+  }
+
+  class ValidationHelper {
+    +ValidateUser(userDto: UserDto): void
+  }
 }
 
-class AnswerService {
-    -IUnitOfWork _unitOfWork
-    -IQuestionService _questionService
-    -IUserService _userService
-    +AnswerService(IUnitOfWork unitOfWork, IQuestionService questionService, IUserService userService)
-    +Task AddAnswerAsync(AnswerDto answerDto)
-    +Task<IList<AnswerDto>> GetAnswersByQuestionIdAsync(int questionId)
-}
+' Dependencies
+AnswerService .|> IAnswerService
+PlaceService .|> IPlaceService
+QuestionService .|> IQuestionService
+ReviewService .|> IReviewService
+UserService .|> IUserService
 
-interface IPlaceService {
-    +Task<PlaceDto> GetPlaceByIdAsync(int id)
-    +Task<IEnumerable<PlaceDto>> GetAllPlacesAsync()
-    +Task AddPlaceAsync(PlaceDto placeDto)
-    +Task UpdatePlaceAsync(PlaceDto placeDto)
-    +Task DeletePlaceAsync(int id)
-}
+AnswerService --> IUnitOfWork
+AnswerService --> IQuestionService
+AnswerService --> IUserService
+AnswerService --> ValidationException
+AnswerService --> BusinessException
 
-class PlaceService {
-    -IUnitOfWork _unitOfWork
-    -IMapper _mapper
-    +PlaceService(IUnitOfWork unitOfWork, IMapper mapper)
-    +Task<PlaceDto> GetPlaceByIdAsync(int id)
-    +Task<IEnumerable<PlaceDto>> GetAllPlacesAsync()
-    +Task AddPlaceAsync(PlaceDto placeDto)
-    +Task UpdatePlaceAsync(PlaceDto placeDto)
-    +Task DeletePlaceAsync(int id)
-}
+PlaceService --> IUnitOfWork
+PlaceService --> IMapper
+PlaceService --> ValidationException
+PlaceService --> BusinessException
 
-interface IQuestionService {
-    +Task<QuestionDto> GetQuestionByIdAsync(int id)
-    +Task<IEnumerable<QuestionDto>> GetAllQuestionsAsync()
-    +Task AddQuestionAsync(QuestionDto questionDto)
-}
+QuestionService --> IUnitOfWork
+QuestionService --> IPlaceService
+QuestionService --> IUserService
+QuestionService --> ValidationException
+QuestionService --> BusinessException
 
-class QuestionService {
-    -IUnitOfWork _unitOfWork
-    -IPlaceService _placeService
-    -IUserService _userService
-    +QuestionService(IUnitOfWork unitOfWork, IPlaceService placeService, IUserService userService)
-    +Task<QuestionDto> GetQuestionByIdAsync(int id)
-    +Task<IEnumerable<QuestionDto>> GetAllQuestionsAsync()
-    +Task AddQuestionAsync(QuestionDto questionDto)
-}
+ReviewService --> IUnitOfWork
+ReviewService --> IPlaceService
+ReviewService --> IUserService
+ReviewService --> BusinessException
 
-interface IReviewService {
-    +Task<ReviewDto> GetReviewByIdAsync(int id)
-    +Task<IEnumerable<ReviewDto>> GetAllReviewsAsync()
-    +Task AddReviewAsync(ReviewDto reviewDto)
-    +Task UpdateReviewAsync(ReviewDto reviewDto)
-}
+UserService --> IUnitOfWork
+UserService --> IMapper
+UserService --> PasswordHash
+UserService --> ValidationHelper
+UserService --> BusinessException
 
-class ReviewService {
-    -IUnitOfWork _unitOfWork
-    -IPlaceService _placeService
-    -IUserService _userService
-    +ReviewService(IUnitOfWork unitOfWork, IPlaceService placeService, IUserService userService)
-    +Task<ReviewDto> GetReviewByIdAsync(int id)
-    +Task<IEnumerable<ReviewDto>> GetAllReviewsAsync()
-    +Task AddReviewAsync(ReviewDto reviewDto)
-    +Task UpdateReviewAsync(ReviewDto reviewDto)
-}
+MappingProfile --> UserDto
+MappingProfile --> PlaceDto
+MappingProfile --> ReviewDto
+MappingProfile --> QuestionDto
+MappingProfile --> AnswerDto
+MappingProfile --> User
+MappingProfile --> Place
+MappingProfile --> Review
+MappingProfile --> Question
+MappingProfile --> Answer
 
-interface IUserService {
-    +Task<UserDto> AuthenticateAsync(string username, string password)
-    +Task<UserDto> GetUserByIdAsync(int id)
-    +Task AddUserAsync(UserDto userDto)
-}
+ValidationHelper --> ValidationException
+ValidationHelper --> UserDto
 
-class UserService {
-    -IUnitOfWork _unitOfWork
-    -IMapper _mapper
-    +UserService(IUnitOfWork unitOfWork, IMapper mapper)
-    +Task<UserDto> AuthenticateAsync(string username, string password)
-    +Task<UserDto> GetUserByIdAsync(int id)
-    +Task AddUserAsync(UserDto userDto)
-}
-
-class MappingProfile {
-    +MappingProfile()
-}
-
-class PasswordHash {
-    +string HashPassword(string password)
-    +bool VerifyPassword(string password, string hashedPassword)
-}
-
-class ValidationHelper {
-    +void ValidateUser(UserDto userDto)
-}
-
-AnswerService ..|> IAnswerService
-PlaceService ..|> IPlaceService
-QuestionService ..|> IQuestionService
-ReviewService ..|> IReviewService
-UserService ..|> IUserService
-
-AnswerService --> IUnitOfWork : uses
-AnswerService --> IQuestionService : uses
-AnswerService --> IUserService : uses
-
-PlaceService --> IUnitOfWork : uses
-PlaceService --> IMapper : uses
-
-QuestionService --> IUnitOfWork : uses
-QuestionService --> IPlaceService : uses
-QuestionService --> IUserService : uses
-
-ReviewService --> IUnitOfWork : uses
-ReviewService --> IPlaceService : uses
-ReviewService --> IUserService : uses
-
-UserService --> IUnitOfWork : uses
-UserService --> IMapper : uses
-
-UserService --> PasswordHash : uses
-UserService --> ValidationHelper : uses
 @enduml
