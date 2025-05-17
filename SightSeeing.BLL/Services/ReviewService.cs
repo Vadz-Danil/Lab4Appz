@@ -75,34 +75,5 @@ namespace SightSeeing.BLL.Services
                 Rating = review.Rating
             };
         }
-
-        public async Task UpdateReviewAsync(ReviewDto reviewDto)
-        {
-            var existingReview = await _unitOfWork.Reviews.GetByIdAsync(reviewDto.Id);
-            if (existingReview == null)
-            {
-                throw new BusinessException($"Відгук з Id {reviewDto.Id} не знайдено.");
-            }
-
-            var place = await _placeService.GetPlaceByIdAsync(reviewDto.PlaceId);
-            if (place == null)
-            {
-                throw new BusinessException($"Місце з Id {reviewDto.PlaceId} не існує.");
-            }
-
-            var user = await _userService.GetUserByIdAsync(reviewDto.UserId);
-            if (user == null)
-            {
-                throw new BusinessException($"Користувач з Id {reviewDto.UserId} не існує.");
-            }
-
-            existingReview.PlaceId = reviewDto.PlaceId;
-            existingReview.UserId = reviewDto.UserId;
-            existingReview.Text = reviewDto.Text;
-            existingReview.Rating = reviewDto.Rating;
-
-            await _unitOfWork.Reviews.UpdateAsync(existingReview);
-            await _unitOfWork.SaveChangesAsync();
-        }
     }
 }
