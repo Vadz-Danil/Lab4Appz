@@ -135,7 +135,7 @@ namespace SightSeeing.Tests
         public Task AddUserAsync_EmptyPassword_ThrowsValidationException()
         {
             var userDto = Fixture.Build<UserDto>()
-                .With(u => u.Name, "ValidUser123") // Явно встановлюємо валідне ім’я
+                .With(u => u.Name, "ValidUser123")
                 .With(u => u.Password, "")
                 .Create();
             
